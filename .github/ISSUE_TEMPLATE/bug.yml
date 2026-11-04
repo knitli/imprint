@@ -1,0 +1,31 @@
+name: Something is wrong
+description: Imprint does something it should not, or fails to do something it should.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Use invented data only.** Never paste real, controlled or classified information, including guide titles, entry text, names, or certificate details. If you are not sure whether something is safe to post, do not post it.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: What you did, what you expected, and what happened instead.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: How to make it happen again
+      description: Steps, using a synthetic guide. Attach the synthetic file if it helps.
+  - type: input
+    id: version
+    attributes:
+      label: Imprint version or commit
+  - type: checkboxes
+    id: synthetic
+    attributes:
+      label: Data check
+      options:
+        - label: Everything in this issue is invented. Nothing is real, controlled or classified.
+          required: true
