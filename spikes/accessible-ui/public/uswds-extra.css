@@ -1,0 +1,3 @@
+/* Only what USWDS does not provide. */
+#editor-heading:focus, #error-summary:focus { outline: 0.25rem solid #2491ff; outline-offset: 0.25rem; }
+.usa-sidenav a[aria-current="true"] { font-weight: 700; }

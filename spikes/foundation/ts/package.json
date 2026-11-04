@@ -1,0 +1,11 @@
+{
+  "name": "@imprint-spikes/foundation-ts",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Spike SP-01, candidate 1: TypeScript/Node thin slice built directly on @knitli/openscg. Synthetic data only.",
+  "license": "AGPL-3.0-only",
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "scripts": { "start": "node --experimental-strip-types server.ts" },
+  "dependencies": { "@knitli/openscg": "0.1.0" }
+}

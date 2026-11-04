@@ -1,0 +1,27 @@
+{
+  "synthetic-lantern": {
+    "complete": true,
+    "items": []
+  },
+  "requirements-compilation": {
+    "complete": true,
+    "items": []
+  },
+  "synthetic-everything": {
+    "complete": false,
+    "items": [
+      {
+        "pointer": "/entries/0/extensions",
+        "kind": "removed"
+      },
+      {
+        "pointer": "/extensions",
+        "kind": "removed"
+      }
+    ]
+  },
+  "synthetic-injection": {
+    "complete": true,
+    "items": []
+  }
+}

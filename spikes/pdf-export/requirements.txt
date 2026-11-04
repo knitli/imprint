@@ -1,0 +1,3 @@
+# Python tools for spike SP-04. Pin exactly.
+typst==0.15.0
+pypdf==6.17.0

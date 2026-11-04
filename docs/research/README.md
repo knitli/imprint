@@ -1,6 +1,22 @@
 # Research and spike plan
 
-**Status:** Draft, November 4, 2026. Synthetic data only.
+**Status:** First round of spikes complete, November 4, 2026. Synthetic data only.
+
+## Results at a glance
+
+| Spike | Answer | Proposed decision |
+| --- | --- | --- |
+| SP-00 | Yes: OpenSCG 0.1.0 passes all 64 conformance cases in our toolchain | [0002](../decisions/0002-pin-openscg.md) (accepted) |
+| SP-01 | TypeScript. Same results as Python, but Python passed only 15 of 36 validation cases without porting about 1,300 lines of OpenSCG | [0003](../decisions/0003-typescript-domain-core.md) |
+| SP-02 | SEE_SP02 | SEE_SP02_DECISION |
+| SP-03 (approximated) | All three likely signing shapes work. Two silent traps found, and a generic verifier is not enough | [0007](../decisions/0007-signer-adapters.md) |
+| SP-04 | Typst: the only candidate with a fully tagged PDF | [0005](../decisions/0005-typst-for-pdf.md) |
+| SP-05 | ExcelJS with a wrapper: 105 of 114 fields round-trip, formula injection blocked | [0006](../decisions/0006-exceljs-for-workbooks.md) |
+| SP-06 | Yes: the slice works with no network, and only loopback is ever contacted | — |
+| SP-07 | USWDS, with validation on the local server (the in-browser validator needs `unsafe-eval`) | [0004](../decisions/0004-validate-on-local-server.md) |
+| SP-08 | Not started: needs practitioners | — |
+
+Each spike's folder under [`spikes/`](../../spikes/) has its own README with the method, the numbers and how to rerun it. The plan below is kept as written, so the expected results can be compared with what happened.
 
 This page lists what we need to learn before we commit to a design. Each spike answers one question, has a time box, and ends with a short write-up and, where a choice is made, a decision record in [`docs/decisions/`](../decisions/).
 
@@ -28,13 +44,13 @@ That changes the trade-off. A Python back end would have to reimplement or wrap 
 | ID | Question | Requirements | Time box | Needs outside help? | Status |
 | --- | --- | --- | --- | --- | --- |
 | [SP-00](#sp-00-can-we-build-on-knitliopenscg-010) | Can we build on `@knitli/openscg` 0.1.0? | M-06, M-11 | 0.5 day | No | **Done** |
-| [SP-01](#sp-01-what-should-the-application-be-built-on) | What should the application be built on? | All M | 3 days | No | Not started |
-| [SP-02](#sp-02-how-should-we-store-revisions) | How should we store revisions? | M-01, R-GIT-01 | 2 days | No | Not started |
-| [SP-03](#sp-03-how-does-an-oca-actually-sign) | How does an OCA actually sign? | M-09, M-10 | Open | **Yes** | Not started |
-| [SP-04](#sp-04-can-we-make-an-accessible-correctly-marked-pdf-offline) | Can we make an accessible, correctly marked PDF offline? | M-05, M-07, M-14 | 2 days | No | Not started |
-| [SP-05](#sp-05-what-goes-in-the-workbook-and-what-is-lost) | What goes in the workbook, and what is lost? | M-07 | 1.5 days | Partly | Not started |
-| [SP-06](#sp-06-can-we-prove-it-works-with-no-network) | Can we prove it works with no network? | M-12, M-13, §7 | 1 day | No | Not started |
-| [SP-07](#sp-07-which-ui-approach-gets-us-accessible-forms-fastest) | Which UI approach gets us accessible forms fastest? | M-14 | 2 days | Partly | Not started |
+| [SP-01](#sp-01-what-should-the-application-be-built-on) | What should the application be built on? | All M | 3 days | No | **Done** |
+| [SP-02](#sp-02-how-should-we-store-revisions) | How should we store revisions? | M-01, R-GIT-01 | 2 days | No | SEE_SP02_STATUS |
+| [SP-03](#sp-03-how-does-an-oca-actually-sign) | How does an OCA actually sign? | M-09, M-10 | Open | **Yes** | **Approximated**; real environment still needed |
+| [SP-04](#sp-04-can-we-make-an-accessible-correctly-marked-pdf-offline) | Can we make an accessible, correctly marked PDF offline? | M-05, M-07, M-14 | 2 days | No | **Done**; veraPDF run still needed |
+| [SP-05](#sp-05-what-goes-in-the-workbook-and-what-is-lost) | What goes in the workbook, and what is lost? | M-07 | 1.5 days | Partly | **Done**; DoD layout still needed |
+| [SP-06](#sp-06-can-we-prove-it-works-with-no-network) | Can we prove it works with no network? | M-12, M-13, §7 | 1 day | No | **Done** |
+| [SP-07](#sp-07-which-ui-approach-gets-us-accessible-forms-fastest) | Which UI approach gets us accessible forms fastest? | M-14 | 2 days | Partly | **Done**; screen-reader pass still needed |
 | [SP-08](#sp-08-what-do-practitioners-need-to-see) | What do practitioners need to see? | Phase 0 gate | Ongoing | **Yes** | Not started |
 
 Suggested order: SP-01 and SP-08 first (they shape everything else), then SP-02, SP-04 and SP-07 together, then SP-05 and SP-06. SP-03 starts now as a conversation, because it depends on people and environments we do not control.
@@ -56,9 +72,9 @@ We installed the published package and ran the whole OpenSCG conformance procedu
 
 Other things we learned:
 
-- **Small footprint.** 11 transitive packages, about 6.6 MB installed: `ajv`, `ajv-formats`, `asn1js`, `pkijs` and their dependencies. That is easy to mirror for an offline install (M-12) and to list in an SBOM.
+- **Small footprint.** 11 transitive packages, about 6.6 MB installed: `ajv`, `ajv-formats`, `asn1js`, `pkijs` and their dependencies. Easy to list in an SBOM. (The project owner confirms every target network has npm and PyPI mirrors, so distribution is not a concern.)
 - **Node 22 or later** is required.
-- **Open question for the browser.** `ajv` builds validators by generating JavaScript at run time. A strict Content Security Policy without `unsafe-eval` would block that in the browser. Options: run validation only on the local server, or ask OpenSCG to ship a precompiled ("standalone") validator. SP-01 should check which one we need.
+- **Open question for the browser.** `ajv` builds validators by generating JavaScript at run time. A strict Content Security Policy without `unsafe-eval` would block that in the browser. SP-07 confirmed it: the in-page validator fails with an `EvalError`. Validation runs on the local server instead ([decision 0004](../decisions/0004-validate-on-local-server.md)).
 
 **What would change this:** if a later OpenSCG release changes function names (the README says names may change before 1.0), the pinned version protects us until we upgrade on purpose. CI runs this spike on every pull request.
 

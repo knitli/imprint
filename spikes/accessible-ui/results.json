@@ -1,0 +1,214 @@
+{
+  "axe_core": "4.14.0",
+  "chromium": "153.0.8010.12",
+  "csp": {
+    "strict": {
+      "validator": "blocked",
+      "error": "EvalError: Evaluating a string as JavaScript violates the following Content Security Policy directive because 'unsafe-eval' is not an allowed source of script: script-src 'self'\".\n",
+      "violations": [
+        "script-src blocked eval"
+      ]
+    },
+    "relaxed_unsafe_eval": {
+      "validator": "browser",
+      "summary": "There are 2 problems with this entry",
+      "violations": []
+    },
+    "strict_with_server_validation": {
+      "validator": "server",
+      "violations": []
+    }
+  },
+  "variants": {
+    "uswds": {
+      "axe": [
+        {
+          "state": "initial",
+          "violations": [],
+          "incomplete": [
+            {
+              "id": "color-contrast",
+              "impact": "serious",
+              "nodes": 2,
+              "help": "Elements must meet minimum color contrast ratio thresholds"
+            }
+          ]
+        },
+        {
+          "state": "with errors",
+          "violations": [],
+          "incomplete": [
+            {
+              "id": "color-contrast",
+              "impact": "serious",
+              "nodes": 2,
+              "help": "Elements must meet minimum color contrast ratio thresholds"
+            }
+          ]
+        },
+        {
+          "state": "after fix",
+          "violations": [],
+          "incomplete": [
+            {
+              "id": "color-contrast",
+              "impact": "serious",
+              "nodes": 2,
+              "help": "Elements must meet minimum color contrast ratio thresholds"
+            }
+          ]
+        }
+      ],
+      "keyboard": {
+        "tab_order": [
+          "a:Skip to main content",
+          "a:gen-name: Unclassified",
+          "a:gen-sponsor: Unclassified",
+          "a:perf-range: Secret",
+          "a:perf-band: Unclassified to Con",
+          "a:perf-weakness: Secret",
+          "a:comp-range-site: Secret",
+          "#field-description",
+          "#field-level",
+          "#cat-a",
+          "#cat-b",
+          "#cat-c",
+          "#cat-d",
+          "#cat-e",
+          "#cat-f",
+          "#cat-g",
+          "#cat-h",
+          "#field-explanation",
+          "#field-declass-kind",
+          "button:Check this entry"
+        ],
+        "focus_after_submit": "#error-summary",
+        "summary": "There are 2 problems with this entry",
+        "summary_links": [
+          "Choose at least one E.O. 13526 section 1.4 category.",
+          "Say when or how this information is declassified."
+        ],
+        "links": [
+          {
+            "link": "Choose at least one E.O. 13526 section 1.4 category.",
+            "focus_landed_on": "#cat-a"
+          },
+          {
+            "link": "Say when or how this information is declassified.",
+            "focus_landed_on": "#field-declass-kind"
+          }
+        ],
+        "aria": {
+          "categories_fieldset_describedby": "error-categories hint-categories",
+          "declass_select_invalid": "true",
+          "declass_select_describedby": "error-declassification"
+        },
+        "after_fix": {
+          "status": "No problems found in this entry. This is not an approval.",
+          "summary_hidden": true,
+          "declass_select_invalid": null,
+          "declass_select_describedby": null,
+          "review_note": "Needs a person to review (not an error in this entry): An authorized person must review the guide's own markings. Software does not decide them."
+        }
+      },
+      "bytes_loaded": 784037,
+      "requests": 9,
+      "files": [
+        "/uswds.html",
+        "/vendor/uswds/css/uswds.min.css",
+        "/uswds-extra.css",
+        "/dist/uswds.js",
+        "/vendor/uswds/img/usa-icons/warning.svg",
+        "/vendor/uswds/img/usa-icons/unfold_more.svg",
+        "/vendor/uswds/fonts/source-sans-pro/sourcesanspro-regular-webfont.woff2",
+        "/vendor/uswds/fonts/source-sans-pro/sourcesanspro-bold-webfont.woff2",
+        "/vendor/uswds/fonts/merriweather/Latin-Merriweather-Bold.woff2"
+      ],
+      "off_origin_requests": [],
+      "csp_violations": [],
+      "reflow_320px_horizontal_scroll": false
+    },
+    "plain": {
+      "axe": [
+        {
+          "state": "initial",
+          "violations": [],
+          "incomplete": []
+        },
+        {
+          "state": "with errors",
+          "violations": [],
+          "incomplete": []
+        },
+        {
+          "state": "after fix",
+          "violations": [],
+          "incomplete": []
+        }
+      ],
+      "keyboard": {
+        "tab_order": [
+          "a:Skip to main content",
+          "a:gen-name: Unclassified",
+          "a:gen-sponsor: Unclassified",
+          "a:perf-range: Secret",
+          "a:perf-band: Unclassified to Con",
+          "a:perf-weakness: Secret",
+          "a:comp-range-site: Secret",
+          "#field-description",
+          "#field-level",
+          "#cat-a",
+          "#cat-b",
+          "#cat-c",
+          "#cat-d",
+          "#cat-e",
+          "#cat-f",
+          "#cat-g",
+          "#cat-h",
+          "#field-explanation",
+          "#field-declass-kind",
+          "button:Check this entry"
+        ],
+        "focus_after_submit": "#error-summary",
+        "summary": "There are 2 problems with this entry",
+        "summary_links": [
+          "Choose at least one E.O. 13526 section 1.4 category.",
+          "Say when or how this information is declassified."
+        ],
+        "links": [
+          {
+            "link": "Choose at least one E.O. 13526 section 1.4 category.",
+            "focus_landed_on": "#cat-a"
+          },
+          {
+            "link": "Say when or how this information is declassified.",
+            "focus_landed_on": "#field-declass-kind"
+          }
+        ],
+        "aria": {
+          "categories_fieldset_describedby": "error-categories hint-categories",
+          "declass_select_invalid": "true",
+          "declass_select_describedby": "error-declassification"
+        },
+        "after_fix": {
+          "status": "No problems found in this entry. This is not an approval.",
+          "summary_hidden": true,
+          "declass_select_invalid": null,
+          "declass_select_describedby": null,
+          "review_note": "Needs a person to review (not an error in this entry): An authorized person must review the guide's own markings. Software does not decide them."
+        }
+      },
+      "bytes_loaded": 194941,
+      "requests": 3,
+      "files": [
+        "/plain.html",
+        "/plain.css",
+        "/dist/plain.js"
+      ],
+      "off_origin_requests": [],
+      "csp_violations": [],
+      "reflow_320px_horizontal_scroll": false
+    }
+  },
+  "failures": []
+}

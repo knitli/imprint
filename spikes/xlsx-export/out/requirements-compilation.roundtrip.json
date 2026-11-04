@@ -1,0 +1,50 @@
+{
+  "schema_version": "0.1.0",
+  "profile": "cnsi-core",
+  "synthetic": true,
+  "guide_id": "urn:uuid:00000000-0000-4000-8000-000000000001",
+  "revision_id": "draft-1",
+  "title": "SYNTHETIC EXAMPLE — NOT CLASSIFICATION GUIDANCE",
+  "lifecycle": {
+    "state": "draft"
+  },
+  "document_markings": {
+    "classification": "U",
+    "banner": "UNCLASSIFIED — SYNTHETIC EXAMPLE"
+  },
+  "entries": [
+    {
+      "kind": "element",
+      "entry_id": "item-a",
+      "description": "Synthetic feature A",
+      "level": "U"
+    },
+    {
+      "kind": "element",
+      "entry_id": "item-b",
+      "description": "Synthetic feature B",
+      "level": "U"
+    },
+    {
+      "kind": "compilation",
+      "entry_id": "combined",
+      "description": "A and B together in the stated context",
+      "level": "S",
+      "condition_text": "Both features appear together",
+      "references": [
+        "item-a",
+        "item-b"
+      ],
+      "reason": {
+        "categories": [
+          "1.4(a)"
+        ],
+        "explanation": "Synthetic training rationale"
+      },
+      "declassification": {
+        "kind": "relative_to_record_creation",
+        "years": 25
+      }
+    }
+  ]
+}

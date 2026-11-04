@@ -1,6 +1,6 @@
 # 0003: Build the domain core in TypeScript on the OpenSCG reference library
 
-**Status:** Proposed. Waits on spike SP-01.  
+**Status:** Proposed. SP-01 is done and supports it; waiting for the project owner to accept.  
 **Date:** 2026-11-04  
 **Requirements:** M-01 to M-12; §12 of the requirements  
 **Spike:** SP-00 (done), SP-01 (not started)
@@ -19,6 +19,10 @@ Requirements §12 recommends trying the FastAPI (Python) template. That was writ
 ## Proposed choice
 
 TypeScript on Node 22 or later, with OpenSCG as the single source of format behaviour. Keep the domain core free of UI and storage code so another front end can use it (requirements §12, last paragraph).
+
+## Evidence from SP-01
+
+The same thin slice in both languages gave identical results and an identical digest. The Python version passed 15 of 36 OpenSCG validation cases, because it had ported only 2 of 34 semantic rules; the TypeScript version passes 36 of 36 by calling the library. Closing the gap would mean porting about 1,300 lines of OpenSCG and keeping them in step. See [`spikes/foundation/`](../../spikes/foundation/).
 
 ## What would change this
 

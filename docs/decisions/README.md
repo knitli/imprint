@@ -15,4 +15,8 @@ A decision record explains one design choice: what we chose, what else we consid
 | --- | --- | --- |
 | [0001](0001-record-decisions.md) | Record design decisions in this folder | Accepted |
 | [0002](0002-pin-openscg.md) | Pin an exact OpenSCG release and run its conformance suite | Accepted |
-| [0003](0003-typescript-domain-core.md) | Build the domain core in TypeScript on the OpenSCG reference library | Proposed (waits on SP-01) |
+| [0003](0003-typescript-domain-core.md) | Build the domain core in TypeScript on the OpenSCG reference library | Proposed (SP-01 supports it) |
+| [0004](0004-validate-on-local-server.md) | Run validation on the local server; use USWDS for the interface | Proposed |
+| [0005](0005-typst-for-pdf.md) | Generate PDFs with Typst | Proposed |
+| [0006](0006-exceljs-for-workbooks.md) | Generate workbooks with ExcelJS behind a small wrapper | Proposed |
+| [0007](0007-signer-adapters.md) | Sign through small signer adapters; verify only with OpenSCG | Proposed |
