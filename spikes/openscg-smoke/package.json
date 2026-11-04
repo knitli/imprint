@@ -1,0 +1,17 @@
+{
+  "name": "@imprint-spikes/openscg-smoke",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Spike: confirm Imprint can consume @knitli/openscg 0.1.0 and that the library passes the published conformance suite in our environment. Synthetic data only.",
+  "license": "AGPL-3.0-only",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "conformance": "node run-conformance.mjs"
+  },
+  "dependencies": {
+    "@knitli/openscg": "0.1.0"
+  }
+}

@@ -14,8 +14,8 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
-lib64/
+/lib/
+/lib64/
 parts/
 sdist/
 var/
@@ -218,3 +218,31 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# ---------------------------------------------------------------------------
+# Imprint additions
+# ---------------------------------------------------------------------------
+# Note: the Python template's "lib/" rule is anchored to the repo root above
+# ("/lib/") so it does not hide JavaScript/TypeScript "src/lib/" folders.
+
+# Node.js / TypeScript
+node_modules/
+.pnpm-store/
+*.tsbuildinfo
+coverage/
+.vite/
+.turbo/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editors and OS
+.DS_Store
+Thumbs.db
+*.swp
+
+# Local working data. Keep scratch guides, exports and signing test material
+# here so they are never committed. Public examples must be synthetic and live
+# in a reviewed fixtures folder instead.
+/local/

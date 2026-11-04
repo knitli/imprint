@@ -1,0 +1,32 @@
+name: Research question or spike
+description: Something we need to learn before we can design or build part of Imprint.
+labels: [research]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        See `docs/research/README.md` for the current spike plan. **Use invented data only.**
+  - type: textarea
+    id: question
+    attributes:
+      label: The question
+      description: One question we can answer. "Can we…?" or "Which of…?" works well.
+    validations:
+      required: true
+  - type: input
+    id: requirements
+    attributes:
+      label: Requirements it affects
+      description: For example M-07, M-14.
+  - type: textarea
+    id: done
+    attributes:
+      label: How we will know it is answered
+      description: The evidence that settles it, and the time box.
+    validations:
+      required: true
+  - type: textarea
+    id: help
+    attributes:
+      label: Outside help or access needed
+      description: People, environments, credentials or documents we do not have yet.
