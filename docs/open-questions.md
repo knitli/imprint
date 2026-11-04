@@ -14,6 +14,7 @@ Questions we cannot answer from the code or the requirements. Each has an owner.
 | 8 | Which practitioners and OCAs will review vocabulary and examples, and can we name them? | Phase 0 exit gate; G-05 says name reviewers only with permission. | Project owner | Open |
 | 9 | Who can run veraPDF (PDF/UA-1) on the Typst sample? This environment blocked it. | Needed before decision 0005 is accepted. | Any developer with a workstation | Open |
 | 10 | Which browsers and operating systems must the first release support? SP-03 tested only Chromium on Linux. | Firefox handles security modules differently. | Project owner | Open |
+| 11 | Who can run a real power-loss test (for example, a virtual machine hard reset) on the snapshot store? | A killed process is gentler than losing power (decision 0008). | Any developer | Open |
 
 ## Answered
 

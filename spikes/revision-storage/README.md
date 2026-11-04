@@ -2,7 +2,7 @@
 
 **Question:** should Imprint keep guide revision history in Git (through `isomorphic-git`), or in plain immutable snapshot files? This is requirement R-GIT-01.
 
-**Short answer:** use **snapshot files** for the MVP. Our `isomorphic-git` setup lost history and left corrupt files after ordinary process crashes. The snapshot backend survived every crash we caused. Keep the data layout Git-friendly so we can add Git export or sync later (phase 3).
+**Short answer:** use **snapshot files** for the MVP. After ordinary process crashes, our `isomorphic-git` setup lost history, left corrupt files, and in two of six runs became unusable until repaired by hand. The snapshot backend survived every crash we caused. Keep the data layout Git-friendly so we can add Git export or sync later (phase 3).
 
 Synthetic data only. Everything here uses the LANTERN example that ships with `@knitli/openscg`.
 
@@ -53,18 +53,25 @@ A child process saves and freezes in a tight loop. We kill it with `SIGKILL` at 
 - every frozen revision still matches its digest;
 - for Git only, `git fsck` reports no problems.
 
-| | Snapshot | Git (`isomorphic-git`) |
+We ran the crash test six times. Kill times are random, so the counts vary; the table gives the range.
+
+| Per run of 60 rounds | Snapshot | Git (`isomorphic-git`) |
 | --- | --- | --- |
-| Rounds | 60 | 60 |
-| Revisions saved | ~1,100 | ~130 |
-| Rounds that left a revision unreadable or a digest wrong | **0** | 0, but only after the two repairs below |
+| Revisions saved | ~1,000–1,100 | ~130–140 |
+| Rounds that left a revision unreadable or a digest wrong | **0 in every run** | 0 in four runs; **54 and 56 in two runs** (store stuck; see below) |
 | Leftover temporary files cleaned up on open | ~30 (harmless) | n/a |
-| Branch file `refs/heads/main` left empty | n/a | **2–3 per 60 rounds** |
-| Index file `.git/index` left empty | n/a | 1–2 per 60 rounds |
-| Rounds where `git fsck` reported damage | n/a | **55 of 60**: an empty object file appeared in round 5 and stayed |
+| Branch file `refs/heads/main` left empty | n/a | **1–5** |
+| Index file `.git/index` left empty | n/a | 0–3 |
+| Rounds where `git fsck` reported damage | n/a | **35–59**: an empty object file appears early and stays |
 | Time per save (50 saves, no crashes) | 1.2 ms | 8.1 ms |
 
-Exact counts change from run to run because the kill times are random.
+**In two of six Git runs the store became unusable.** We captured the details the second time. In round 3, a kill left an empty object file that the latest commit needed. From round 4 on:
+
+- every new process failed on start with `DecompressionError`;
+- `listRevisions` failed;
+- the store showed **0 revisions** until someone repaired it by hand.
+
+The snapshot backend never got stuck.
 
 **What went wrong with Git, in plain words:**
 

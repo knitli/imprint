@@ -20,3 +20,4 @@ A decision record explains one design choice: what we chose, what else we consid
 | [0005](0005-typst-for-pdf.md) | Generate PDFs with Typst | Proposed |
 | [0006](0006-exceljs-for-workbooks.md) | Generate workbooks with ExcelJS behind a small wrapper | Proposed |
 | [0007](0007-signer-adapters.md) | Sign through small signer adapters; verify only with OpenSCG | Proposed |
+| [0008](0008-snapshot-revision-storage.md) | Store revisions as snapshot files; add Git later as an export | Proposed |

@@ -8,7 +8,7 @@
 | --- | --- | --- |
 | SP-00 | Yes: OpenSCG 0.1.0 passes all 64 conformance cases in our toolchain | [0002](../decisions/0002-pin-openscg.md) (accepted) |
 | SP-01 | TypeScript. Same results as Python, but Python passed only 15 of 36 validation cases without porting about 1,300 lines of OpenSCG | [0003](../decisions/0003-typescript-domain-core.md) |
-| SP-02 | SEE_SP02 | SEE_SP02_DECISION |
+| SP-02 | Snapshot files. `isomorphic-git` damaged its own history when the process was killed mid-save | [0008](../decisions/0008-snapshot-revision-storage.md) |
 | SP-03 (approximated) | All three likely signing shapes work. Two silent traps found, and a generic verifier is not enough | [0007](../decisions/0007-signer-adapters.md) |
 | SP-04 | Typst: the only candidate with a fully tagged PDF | [0005](../decisions/0005-typst-for-pdf.md) |
 | SP-05 | ExcelJS with a wrapper: 105 of 114 fields round-trip, formula injection blocked | [0006](../decisions/0006-exceljs-for-workbooks.md) |
@@ -45,7 +45,7 @@ That changes the trade-off. A Python back end would have to reimplement or wrap 
 | --- | --- | --- | --- | --- | --- |
 | [SP-00](#sp-00-can-we-build-on-knitliopenscg-010) | Can we build on `@knitli/openscg` 0.1.0? | M-06, M-11 | 0.5 day | No | **Done** |
 | [SP-01](#sp-01-what-should-the-application-be-built-on) | What should the application be built on? | All M | 3 days | No | **Done** |
-| [SP-02](#sp-02-how-should-we-store-revisions) | How should we store revisions? | M-01, R-GIT-01 | 2 days | No | SEE_SP02_STATUS |
+| [SP-02](#sp-02-how-should-we-store-revisions) | How should we store revisions? | M-01, R-GIT-01 | 2 days | No | **Done**; power-loss test still needed |
 | [SP-03](#sp-03-how-does-an-oca-actually-sign) | How does an OCA actually sign? | M-09, M-10 | Open | **Yes** | **Approximated**; real environment still needed |
 | [SP-04](#sp-04-can-we-make-an-accessible-correctly-marked-pdf-offline) | Can we make an accessible, correctly marked PDF offline? | M-05, M-07, M-14 | 2 days | No | **Done**; veraPDF run still needed |
 | [SP-05](#sp-05-what-goes-in-the-workbook-and-what-is-lost) | What goes in the workbook, and what is lost? | M-07 | 1.5 days | Partly | **Done**; DoD layout still needed |

@@ -8,7 +8,7 @@ This table tracks each Imprint requirement from [requirements.md](requirements.m
 
 | ID | Short name | Spikes that inform it | OpenSCG functions it relies on | Status |
 | --- | --- | --- | --- | --- |
-| M-01 | Local drafts with stable IDs | SP-01, SP-02 | `parseStrict`, `payloadDigest` | Researching (SP-01 done) |
+| M-01 | Local drafts with stable IDs | SP-01, SP-02 | `parseStrict`, `payloadDigest` | Researching (SP-01, SP-02 done) |
 | M-02 | Precise entries, levels, reasons | SP-07 | `validate` | Researching (SP-07 done) |
 | M-03 | Declassification instructions | SP-07 | `validate` | Researching (SP-07 done) |
 | M-04 | Conditional and compilation guidance | SP-07, SP-08 | `validate` | Not started |
@@ -27,6 +27,6 @@ This table tracks each Imprint requirement from [requirements.md](requirements.m
 
 | ID | Short name | Spikes that inform it | Status |
 | --- | --- | --- | --- |
-| R-GIT-01 | Evaluate isomorphic-git | SP-02 | Not started |
-| R-GIT-02 | Bind approval to content, not a Git ref | SP-02 | Not started |
+| R-GIT-01 | Evaluate isomorphic-git | SP-02 | Researching (evaluated; not adopted for MVP, decision 0008) |
+| R-GIT-02 | Bind approval to content, not a Git ref | SP-02 | Researching (binding shown to survive moved refs and rewritten history) |
 | R-UDS-01 to R-UDS-04 | UDS/Zarf package | after MVP | Not started |
