@@ -56,13 +56,14 @@ async function test(backend) {
   let branchRepairs = 0;
   let fsckProblems = 0;
   const examples = [];
+  const problems = [];
   const t0 = Date.now();
   for (let i = 0; i < ITERATIONS; i++) {
     try {
       await once(backend, root);
     } catch (e) {
       failures++;
-      examples.push(`iteration ${i}: ${e.message.slice(0, 200)}`);
+      if (problems.length < 5) problems.push(`iteration ${i}: ${e.message.slice(0, 200)}`);
       continue;
     }
     const store = make();
@@ -77,7 +78,7 @@ async function test(backend) {
     const v = await verifyStore(store);
     if (v.issues.length) {
       failures++;
-      if (examples.length < 5) examples.push(`iteration ${i}: ${v.issues.join("; ")}`);
+      if (problems.length < 5) problems.push(`iteration ${i}: ${v.issues.slice(0, 2).join("; ")}`);
     }
     if (backend === "git") {
       try {
@@ -102,7 +103,8 @@ async function test(backend) {
     gitIndexRebuiltAfterCrash: backend === "git" ? indexRebuilds : "n/a",
     leftoverTempFilesCleaned: backend === "git" ? "n/a" : tempFilesRemoved,
     seconds: Math.round((Date.now() - t0) / 1000),
-    examples,
+    problemExamples: problems,
+    otherExamples: examples.slice(0, 3).map((e) => e.split("\n")[0]),
   };
 }
 
