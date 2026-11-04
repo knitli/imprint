@@ -1,6 +1,6 @@
 # 0006: Generate workbooks with ExcelJS behind a small wrapper
 
-**Status:** Proposed  
+**Status:** Accepted (project owner, 2026-11-04)  
 **Date:** 2026-11-04  
 **Requirements:** M-07; §7 (untrusted input, formula injection)  
 **Spike:** SP-05

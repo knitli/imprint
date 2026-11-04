@@ -1,6 +1,6 @@
 # 0003: Build the domain core in TypeScript on the OpenSCG reference library
 
-**Status:** Proposed. SP-01 is done and supports it; waiting for the project owner to accept.  
+**Status:** Accepted (project owner, 2026-11-04)  
 **Date:** 2026-11-04  
 **Requirements:** M-01 to M-12; §12 of the requirements  
 **Spike:** SP-00 (done), SP-01 (not started)

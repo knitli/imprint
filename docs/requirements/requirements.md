@@ -7,6 +7,12 @@
 
 **Related analysis:** [Git versioning and Defense Unicorns UDS addendum](scg-git-uds-addendum.md) gives supporting detail. This requirements document controls where the earlier addendum differs.
 
+> **Project owner clarifications, November 4, 2026** ([decision 0009](../decisions/0009-mvp-scope-clarifications.md)). These change how the text below is read for the MVP:
+>
+> 1. A self-signed PKCS#11 software token used from Chromium is the representative signing environment for MVP acceptance (M-09, §6). A real agency environment is not an MVP gate.
+> 2. The project owner, a practitioner for 18 years, is the practitioner reviewer for vocabulary, examples and markings. Interviews are not an MVP gate (§8, phase 0).
+> 3. The UDS/Zarf package (R-UDS-01 to R-UDS-04) ships with the first release, not after it (§8, phase 2a).
+
 > **Repository note:** this file is the requirements text as given at project start, stored here so code and requirements can be reviewed together. Track progress against it in [traceability.md](traceability.md), and record changes to it through a pull request so the history is visible.
 
 ## 1. Decision and objective

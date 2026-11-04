@@ -16,7 +16,7 @@ This table tracks each Imprint requirement from [requirements.md](requirements.m
 | M-06 | Actionable checks; never "compliant" | SP-00, SP-07 | `validate`, `isApprovalReady`, `RULES` | Researching (SP-00, SP-07 done) |
 | M-07 | JSON, PDF and XLSX from one frozen revision | SP-04, SP-05 | `canonicalize`, `payloadDigest`, `buildReleaseManifest` | Researching (SP-04, SP-05 done) |
 | M-08 | Import with no silent loss | SP-01 | `parseStrict`, `validate`, `compareForLoss` | Not started |
-| M-09 | Sign with an existing credential | SP-03 | `buildApprovalStatement`, `verifyAttestation` | Researching (approximated; real environment still needed for acceptance) |
+| M-09 | Sign with an existing credential | SP-03 | `buildApprovalStatement`, `verifyAttestation` | Researching (SoftHSM2 PKCS#11 in Chromium is the MVP acceptance environment, decision 0009) |
 | M-10 | Separate draft, signed, verified and authority states | SP-03 | `verifyAttestation` | Researching (SP-03 showed each state reported separately) |
 | M-11 | Declared OpenSCG version; conformance | SP-00 | whole suite | Researching (pinned; suite passes in CI) |
 | M-12 | No network for core functions | SP-06 | — | Researching (SP-06 done for the slice) |
@@ -29,4 +29,4 @@ This table tracks each Imprint requirement from [requirements.md](requirements.m
 | --- | --- | --- | --- |
 | R-GIT-01 | Evaluate isomorphic-git | SP-02 | Researching (evaluated; not adopted for MVP, decision 0008) |
 | R-GIT-02 | Bind approval to content, not a Git ref | SP-02 | Researching (binding shown to survive moved refs and rewritten history) |
-| R-UDS-01 to R-UDS-04 | UDS/Zarf package | after MVP | Not started |
+| R-UDS-01 to R-UDS-04 | UDS/Zarf package (**in MVP scope**, decision 0009) | SP-09 | Not started |

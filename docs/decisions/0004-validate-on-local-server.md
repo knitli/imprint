@@ -1,6 +1,6 @@
 # 0004: Run validation on the local server, and use USWDS for the interface
 
-**Status:** Proposed  
+**Status:** Accepted (project owner, 2026-11-04)  
 **Date:** 2026-11-04  
 **Requirements:** M-02 to M-06, M-14; §7 (security)  
 **Spikes:** SP-07, SP-01, SP-06

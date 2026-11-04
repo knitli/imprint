@@ -1,6 +1,6 @@
 # 0007: Sign through small "signer adapters"; verify only with OpenSCG
 
-**Status:** Proposed  
+**Status:** Accepted (project owner, 2026-11-04)  
 **Date:** 2026-11-04  
 **Requirements:** M-09, M-10; §6  
 **Spike:** SP-03 (approximated with synthetic PKI and a software token)

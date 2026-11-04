@@ -1,6 +1,6 @@
 # 0005: Generate PDFs with Typst
 
-**Status:** Proposed  
+**Status:** Accepted (project owner, 2026-11-04)  
 **Date:** 2026-11-04  
 **Requirements:** M-05, M-07, M-14  
 **Spike:** SP-04

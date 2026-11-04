@@ -1,6 +1,6 @@
 # 0008: Store revisions as snapshot files; add Git later as an export
 
-**Status:** Proposed  
+**Status:** Accepted (project owner, 2026-11-04)  
 **Date:** 2026-11-04  
 **Requirements:** M-01, R-GIT-01, R-GIT-02  
 **Spike:** SP-02
