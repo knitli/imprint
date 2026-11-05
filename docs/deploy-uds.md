@@ -91,13 +91,15 @@ uds zarf package deploy zarf-package-imprint-amd64-0.1.0-dev.tar.zst --confirm
 
 Then open `https://imprint.uds.dev`. You are sent to Keycloak first. The development bundle's helper creates a test user in `/UDS Core/Admin`; see the UDS Core documentation for "Add Your Own Package".
 
-## Tested versions
+## What has been tested
 
-| Component | Version |
+| Check | Result |
 | --- | --- |
-| UDS CLI | 0.40.0 (bundles Zarf 0.88.0) |
-| UDS Core | 1.15.2, `k3d-core-slim-dev` |
-| k3d | 5.8.3 |
+| Image runs with no network, read-only root, no capabilities, non-root (`deploy/smoke-test.sh`, in CI) | Passes |
+| Zarf package builds with an SBOM, UDS CLI 0.40.0 / Zarf 0.88.0 (in CI) | Passes |
+| Full deployment on UDS Core 1.15.2 `k3d-core-slim-dev` | **Not yet tested.** The development sandbox could not run a nested Kubernetes cluster: it uses cgroup v1, and its container runtime may not set process priorities, so no pod could start, not even CoreDNS. Run the "Local test cluster" steps on a host with cgroup v2 and Docker, or on a real UDS environment. |
+
+Pinned versions: UDS CLI 0.40.0 (bundles Zarf 0.88.0), UDS Core 1.15.2, k3d 5.8.3.
 
 ## Licensing
 
