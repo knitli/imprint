@@ -256,6 +256,20 @@ export function createImprintServer(service: GuideService, config: ServerConfig)
 
   async function handle(req: IncomingMessage, res: ServerResponse): Promise<void> {
     const port = (req.socket.localPort ?? config.port) as number;
+    // Health check for container platforms. It reveals nothing and changes
+    // nothing, so it answers any host name: Kubernetes probes use the pod's IP.
+    if (req.url === "/healthz" && (req.method === "GET" || req.method === "HEAD")) {
+      const ok = await service.store.keys().then(
+        () => true,
+        () => false,
+      );
+      res.writeHead(ok ? 200 : 503, {
+        "content-type": "text/plain; charset=utf-8",
+        "cache-control": "no-store",
+      });
+      res.end(ok ? "ok\n" : "storage unavailable\n");
+      return;
+    }
     if (!hostAllowed(req.headers.host, port))
       throw new HttpError(421, "This server does not answer to that host name.");
     const url = new URL(req.url ?? "/", "http://local");

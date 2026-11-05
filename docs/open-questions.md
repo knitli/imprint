@@ -13,6 +13,7 @@ Questions we cannot answer from the code or the requirements. Each has an owner.
 | 9 | Who can run veraPDF (PDF/UA-1) on the Typst sample? This environment blocked it. | Needed before decision 0005 is accepted. | Any developer with a workstation | Open |
 | 10 | Which browsers and operating systems must the first release support? SP-03 tested only Chromium on Linux. | Firefox handles security modules differently. | Project owner | Open |
 | 11 | Who can run a real power-loss test (for example, a virtual machine hard reset) on the snapshot store? | A killed process is gentler than losing power (decision 0008). | Any developer | Open |
+| 12 | Who can run the full UDS Core deployment test (docs/deploy-uds.md, "Local test cluster") on a host with cgroup v2, or on a representative UDS environment? The development sandbox cannot run nested Kubernetes. | Confirms the Package resource, SSO, network policy and storage behave as designed (R-UDS-01 to R-UDS-03). | Project owner or any developer with a Linux workstation | Open |
 
 ## Answered
 

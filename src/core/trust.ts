@@ -11,6 +11,10 @@
 //   <trust>/policy.json     optional: {"unknown_revocation": "fail" | "accept",
 //                                      "require_non_repudiation": true | false}
 //
+// The same files can also sit directly in <trust>/ with a prefix, which is how
+// a Kubernetes Secret or ConfigMap mounts them (one flat folder):
+//   anchor-*.pem, intermediate-*.pem, crl-*.pem
+//
 // With no anchors, nothing is trusted (OpenSCG spec 9.4: there is no default trust).
 
 import { readdir, readFile } from "node:fs/promises";
@@ -30,11 +34,18 @@ export interface TrustSummary {
 
 const MAX_FILE = 1024 * 1024;
 
-async function readObjects(dir: string, label: string, problems: string[]): Promise<Uint8Array[]> {
+async function readObjects(
+  dir: string,
+  label: string,
+  problems: string[],
+  prefix = "",
+): Promise<Uint8Array[]> {
   const out: Uint8Array[] = [];
-  const names = await readdir(dir).catch(() => [] as string[]);
-  for (const name of names.sort()) {
-    if (name.startsWith(".")) continue;
+  const names = await readdir(dir, { withFileTypes: true }).catch(() => []);
+  for (const entry of names.sort((a, b) => a.name.localeCompare(b.name))) {
+    const name = entry.name;
+    // Skip hidden names, including the ..data links Kubernetes adds to mounted Secrets.
+    if (name.startsWith(".") || !name.startsWith(prefix) || entry.isDirectory()) continue;
     const bytes = await readFile(join(dir, name)).catch(() => null);
     if (!bytes || bytes.length > MAX_FILE) {
       problems.push(`${name}: could not be read, or is larger than 1 MB.`);
@@ -69,9 +80,18 @@ const oidName = (oid: string) => OIDS[oid] ?? oid;
 
 export async function loadTrust(dir: string): Promise<{ policy: TrustPolicy; summary: TrustSummary }> {
   const problems: string[] = [];
-  const anchors = await readObjects(join(dir, "anchors"), "CERTIFICATE", problems);
-  const intermediates = await readObjects(join(dir, "intermediates"), "CERTIFICATE", problems);
-  const crls = await readObjects(join(dir, "crls"), "X509 CRL", problems);
+  const anchors = [
+    ...(await readObjects(join(dir, "anchors"), "CERTIFICATE", problems)),
+    ...(await readObjects(dir, "CERTIFICATE", problems, "anchor-")),
+  ];
+  const intermediates = [
+    ...(await readObjects(join(dir, "intermediates"), "CERTIFICATE", problems)),
+    ...(await readObjects(dir, "CERTIFICATE", problems, "intermediate-")),
+  ];
+  const crls = [
+    ...(await readObjects(join(dir, "crls"), "X509 CRL", problems)),
+    ...(await readObjects(dir, "X509 CRL", problems, "crl-")),
+  ];
   let unknownRevocation: "fail" | "accept" = "fail";
   let requireNonRepudiation = true;
   const raw = await readFile(join(dir, "policy.json"), "utf8").catch(() => null);

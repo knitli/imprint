@@ -1,0 +1,12 @@
+# Keep the build context small and free of local data.
+.git
+.github
+node_modules
+.tools
+imprint-data
+local
+spikes
+docs
+test
+deploy
+*.log

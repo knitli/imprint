@@ -29,4 +29,4 @@ This table tracks each Imprint requirement from [requirements.md](requirements.m
 | --- | --- | --- | --- |
 | R-GIT-01 | Evaluate isomorphic-git | SP-02 | Researching (evaluated; not adopted for MVP, decision 0008) |
 | R-GIT-02 | Bind approval to content, not a Git ref | SP-02 | Researching (binding shown to survive moved refs and rewritten history) |
-| R-UDS-01 to R-UDS-04 | UDS/Zarf package (**in MVP scope**, decision 0009) | SP-09 | Not started |
+| R-UDS-01 to R-UDS-04 | UDS/Zarf package (**in MVP scope**, decision 0009) | SP-09 | In progress: image, Zarf package with SBOM, UDS Package resource (ingress, SSO, default-deny network), offline smoke test in CI; docs/deploy-uds.md (decision 0010). Full cluster deployment not yet tested (open question 12) |

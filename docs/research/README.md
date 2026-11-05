@@ -15,7 +15,7 @@
 | SP-06 | Yes: the slice works with no network, and only loopback is ever contacted | — |
 | SP-07 | USWDS, with validation on the local server (the in-browser validator needs `unsafe-eval`) | [0004](../decisions/0004-validate-on-local-server.md) |
 | SP-08 | Resolved: the project owner is the practitioner reviewer | [0009](../decisions/0009-mvp-scope-clarifications.md) |
-| SP-09 | Not started: UDS/Zarf packaging, now in MVP scope | — |
+| SP-09 | Done: one container in a Zarf package; the UDS Operator handles ingress, SSO and network policy | [0010](../decisions/0010-uds-deployment.md) |
 
 Each spike's folder under [`spikes/`](../../spikes/) has its own README with the method, the numbers and how to rerun it. The plan below is kept as written, so the expected results can be compared with what happened.
 

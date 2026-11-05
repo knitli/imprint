@@ -22,3 +22,4 @@ A decision record explains one design choice: what we chose, what else we consid
 | [0007](0007-signer-adapters.md) | Sign through small signer adapters; verify only with OpenSCG | Accepted |
 | [0008](0008-snapshot-revision-storage.md) | Store revisions as snapshot files; add Git later as an export | Accepted |
 | [0009](0009-mvp-scope-clarifications.md) | MVP scope clarifications: approximated signing environment, owner as practitioner reviewer, UDS at first release | Accepted |
+| [0010](0010-uds-deployment.md) | Deploy on UDS Core as one container in a Zarf package | Proposed |
