@@ -1,0 +1,175 @@
+{
+  "versions": {
+    "exceljs": "4.4.0",
+    "openscg": "0.1.0",
+    "node": "v22.23.4"
+  },
+  "fixtures": {
+    "synthetic-lantern": {
+      "sha256": "58cdbfe2b707dac14ab341e144c2f79de0b43c2a3907c7709455ee04e989aa59",
+      "loss_items": 0,
+      "loss": [],
+      "added": [],
+      "roundtrip_structure_findings": 0
+    },
+    "requirements-compilation": {
+      "sha256": "8cf8b256ef1b7f8584aa2ca95560d2d3f347adfcb817f84dd2642ee6fa88559f",
+      "loss_items": 0,
+      "loss": [],
+      "added": [],
+      "roundtrip_structure_findings": 0
+    },
+    "synthetic-everything": {
+      "sha256": "c6a7fbf59027e35864b0e1d1724e75d4779bd57e85f78abb335e4ccbea1f1488",
+      "loss_items": 2,
+      "loss": [
+        {
+          "pointer": "/entries/0/extensions",
+          "kind": "removed"
+        },
+        {
+          "pointer": "/extensions",
+          "kind": "removed"
+        }
+      ],
+      "added": [],
+      "roundtrip_structure_findings": 0
+    },
+    "synthetic-injection": {
+      "sha256": "1c4ebe3a81c3ff4bddc278cd5a9d5de60cb93f438a8a204718efccd8d6c9b334",
+      "loss_items": 0,
+      "loss": [],
+      "added": [],
+      "roundtrip_structure_findings": 0
+    }
+  },
+  "coverage_totals": {
+    "mapped": 105,
+    "not mapped": 9
+  },
+  "injection": {
+    "sheet_xml_files": 8,
+    "formula_elements": 0,
+    "cell_types": {
+      "s": 652,
+      "(none)": 2
+    },
+    "shared_strings_sample": [
+      [
+        "=1+1",
+        true
+      ],
+      [
+        "+1+1",
+        true
+      ],
+      [
+        "-1+1",
+        true
+      ],
+      [
+        "@SUM(1,1)",
+        true
+      ],
+      [
+        "=cmd|",
+        true
+      ]
+    ],
+    "libreoffice": {
+      "csv_files": 8,
+      "entries_csv": "synthetic-injection-Entries.csv",
+      "evaluated": false,
+      "rows": [
+        "1,eq,,,=1+1,U,U,,,,,,,,,,,,,,,,,,,,,,,,,,",
+        "2,plus,,,+1+1,U,U,,,,,,,,,,,,,,,,,,,,,,,,,,",
+        "3,minus,,,-1+1,U,U,,,,,,,,,,,,,,,,,,,,,,,,,,",
+        "4,at,,,\"@SUM(1,1)\",U,U,,,,,,,,,,,,,,,,,,,,,,,,,,",
+        "5,tab,,,\t=1+1,U,U,,,,,,,,,,,,,,,,,,,,,,,,,,",
+        "6,cr,,,\"\r=1+1\",U,U,,,,,,,,,,,,,,,,,,,,,,,,,,",
+        "7,dde,,,=cmd|' /C calc'!A0,U,U,,,,,,,,,,,,,,,,,,,,,,,,,,",
+        "8,crlf,,,\"Line one",
+        "9,spaces,,,  leading and trailing spaces  ,U,U,,,,,,,,,,,,,,,,,,,,,,,,,,",
+        "10,ctrl,,,Control char \u0007 bell and _x0041_ literal,U,U,,,,,,,,,,,,,,,,,,,,,,,,,,",
+        "11,num,,,00123,U,U,,,,,,,,,,,,,,,,,,,,,,,,,,1.4E+5"
+      ]
+    },
+    "exact_text_roundtrip": [
+      {
+        "entry_id": "eq",
+        "same": true,
+        "after": "=1+1"
+      },
+      {
+        "entry_id": "plus",
+        "same": true,
+        "after": "+1+1"
+      },
+      {
+        "entry_id": "minus",
+        "same": true,
+        "after": "-1+1"
+      },
+      {
+        "entry_id": "at",
+        "same": true,
+        "after": "@SUM(1,1)"
+      },
+      {
+        "entry_id": "tab",
+        "same": true,
+        "after": "\t=1+1"
+      },
+      {
+        "entry_id": "cr",
+        "same": true,
+        "after": "\r=1+1"
+      },
+      {
+        "entry_id": "dde",
+        "same": true,
+        "after": "=cmd|' /C calc'!A0"
+      },
+      {
+        "entry_id": "crlf",
+        "same": true,
+        "after": "Line one\r\nLine two  "
+      },
+      {
+        "entry_id": "spaces",
+        "same": true,
+        "after": "  leading and trailing spaces  "
+      },
+      {
+        "entry_id": "ctrl",
+        "same": true,
+        "after": "Control char \u0007 bell and _x0041_ literal"
+      },
+      {
+        "entry_id": "num",
+        "same": true,
+        "after": "00123"
+      }
+    ],
+    "title_roundtrip_same": true
+  },
+  "determinism": {
+    "same_input_same_fixed_time_identical_bytes": true,
+    "default_time_identical_bytes": false,
+    "fixed_time_differences": [],
+    "default_time_differences": [
+      "[Content_Types].xml: zip timestamp 2026-11-04T22:50:24.000Z vs 2026-11-04T22:50:26.000Z",
+      "_rels/.rels: zip timestamp 2026-11-04T22:50:24.000Z vs 2026-11-04T22:50:26.000Z",
+      "docProps/app.xml: zip timestamp 2026-11-04T22:50:24.000Z vs 2026-11-04T22:50:26.000Z",
+      "docProps/core.xml: zip timestamp 2026-11-04T22:50:24.000Z vs 2026-11-04T22:50:26.000Z",
+      "docProps/core.xml: content differs",
+      "xl/_rels/workbook.xml.rels: zip timestamp 2026-11-04T22:50:24.000Z vs 2026-11-04T22:50:26.000Z",
+      "xl/sharedStrings.xml: zip timestamp 2026-11-04T22:50:24.000Z vs 2026-11-04T22:50:26.000Z",
+      "xl/styles.xml: zip timestamp 2026-11-04T22:50:24.000Z vs 2026-11-04T22:50:26.000Z",
+      "xl/theme/theme1.xml: zip timestamp 2026-11-04T22:50:24.000Z vs 2026-11-04T22:50:26.000Z",
+      "xl/workbook.xml: zip timestamp 2026-11-04T22:50:24.000Z vs 2026-11-04T22:50:26.000Z",
+      "xl/worksheets/sheet1.xml: zip timestamp 2026-11-04T22:50:24.000Z vs 2026-11-04T22:50:26.000Z",
+      "xl/worksheets/sheet2.xml: zip timestamp 2026-11-04T22:50:24.000Z vs 2026-11-04T22:50:26.000Z"
+    ]
+  }
+}

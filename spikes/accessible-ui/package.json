@@ -1,0 +1,22 @@
+{
+  "name": "@imprint-spikes/accessible-ui",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Spike SP-07: accessible entry-editor screen built with USWDS and with plain semantic HTML. Synthetic data only.",
+  "license": "AGPL-3.0-only",
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "build": "node build.mjs",
+    "serve": "node serve.mjs",
+    "test": "node build.mjs && node test/run.mjs"
+  },
+  "dependencies": {
+    "@knitli/openscg": "0.1.0",
+    "@uswds/uswds": "3.14.0"
+  },
+  "devDependencies": {
+    "axe-core": "4.14.0",
+    "esbuild": "0.28.2"
+  }
+}

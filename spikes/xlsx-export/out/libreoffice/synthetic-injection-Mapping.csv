@@ -1,0 +1,93 @@
+UNCLASSIFIED — SYNTHETIC & TEST,,,
+SYNTHETIC — DRAFT / NOT APPROVED,,,
+Guide urn:uuid:5e1d0c3a-0000-4000-8000-00000000f0e1 · revision inject-1 · payload digest sha-256:ee1de4d9b959c736b6bc424bf200bad86d38c6fa624be98f1ad63e256e001bb6,,,
+How each column maps to the OpenSCG JSON. Columns marked display-only are written for people and not read back.,,,
+,,,
+Sheet,Column,JSON pointer (relative to the row's item),Encoding
+Entries,Guide order,#order,int
+Entries,Entry ID,/entry_id,text
+Entries,Section ID,/section_id,text
+Entries,Portion marking (of this row),/portion_marking,text
+Entries,Information described,/description,text
+Entries,Level,(display-only),
+Entries,Level (single),/level,text
+Entries,Level range: lowest,/level_range/lowest,text
+Entries,Level range: highest,/level_range/highest,text
+Entries,Level range: conditions,/level_range/condition_text,text
+Entries,Regime,/regime,text
+Entries,Conditions,/condition_text,text
+Entries,Exceptions,/exceptions_text,text
+Entries,Referenced entries (one per line),/references,list
+Entries,Controls,(display-only),
+Entries,Reason: §1.4 categories (one per line),/reason/categories,list
+Entries,Reason: explanation,/reason/explanation,text
+Entries,Declassification,(display-only),
+Entries,Declassification: kind,/declassification/kind,text
+Entries,Declassify on date,/declassification/date,text
+Entries,Declassify on event,/declassification/event_text,text
+Entries,Years after record creation,/declassification/years,int
+Entries,Exemption code (claimed),/declassification/code,text
+Entries,Exemption until date,/declassification/until_date,text
+Entries,Exemption until event,/declassification/until_event_text,text
+Entries,Exemption authority: kind,/declassification/authority/kind,text
+Entries,Exemption authority: reference,/declassification/authority/reference,text
+Entries,Exemption authority: date,/declassification/authority/date,text
+Entries,Exemption authority: URI,/declassification/authority/uri,text
+Entries,Value statement,/statements/value,text
+Entries,Damage statement,/statements/damage,text
+Entries,Unclassified statement,/statements/unclassified,text
+Entries,Notes,/notes,text
+Compilation,Guide order,#order,int
+Compilation,Entry ID,/entry_id,text
+Compilation,Section ID,/section_id,text
+Compilation,Portion marking (of this row),/portion_marking,text
+Compilation,Information described,/description,text
+Compilation,Level,(display-only),
+Compilation,Level (single),/level,text
+Compilation,Level range: lowest,/level_range/lowest,text
+Compilation,Level range: highest,/level_range/highest,text
+Compilation,Level range: conditions,/level_range/condition_text,text
+Compilation,Regime,/regime,text
+Compilation,Conditions,/condition_text,text
+Compilation,Exceptions,/exceptions_text,text
+Compilation,Constituent entries (one per line),/references,list
+Compilation,Controls,(display-only),
+Compilation,Reason: §1.4 categories (one per line),/reason/categories,list
+Compilation,Reason: explanation,/reason/explanation,text
+Compilation,Declassification,(display-only),
+Compilation,Declassification: kind,/declassification/kind,text
+Compilation,Declassify on date,/declassification/date,text
+Compilation,Declassify on event,/declassification/event_text,text
+Compilation,Years after record creation,/declassification/years,int
+Compilation,Exemption code (claimed),/declassification/code,text
+Compilation,Exemption until date,/declassification/until_date,text
+Compilation,Exemption until event,/declassification/until_event_text,text
+Compilation,Exemption authority: kind,/declassification/authority/kind,text
+Compilation,Exemption authority: reference,/declassification/authority/reference,text
+Compilation,Exemption authority: date,/declassification/authority/date,text
+Compilation,Exemption authority: URI,/declassification/authority/uri,text
+Compilation,Value statement,/statements/value,text
+Compilation,Damage statement,/statements/damage,text
+Compilation,Unclassified statement,/statements/unclassified,text
+Compilation,Notes,/notes,text
+Controls,Entry ID,#entry,text
+Controls,Marking,/marking,text
+Controls,Kind,/kind,text
+Controls,Note,/note,text
+Sources,Entry ID,#entry,text
+Sources,Citation,/citation,text
+Sources,URI,/uri,text
+Sections,Section ID,/section_id,text
+Sections,Title,/title,text
+Sections,Portion marking,/portion_marking,text
+Sections,Description,/description,text
+Links,Relation,#rel,text
+Links,Guide ID,/guide_id,text
+Links,Revision ID,/revision_id,text
+Links,Title,/title,text
+Links,Kind,/kind,text
+Links,Reference,/reference,text
+Links,Date,/date,text
+Links,URI,/uri,text
+Links,Payload digest (SHA-256),/payload_digest/value,text
+Links,Note,/note,text

@@ -1,6 +1,23 @@
 # Research and spike plan
 
-**Status:** Draft, November 4, 2026. Synthetic data only.
+**Status:** First round of spikes complete, November 4, 2026. Synthetic data only.
+
+## Results at a glance
+
+| Spike | Answer | Proposed decision |
+| --- | --- | --- |
+| SP-00 | Yes: OpenSCG 0.1.0 passes all 64 conformance cases in our toolchain | [0002](../decisions/0002-pin-openscg.md) (accepted) |
+| SP-01 | TypeScript. Same results as Python, but Python passed only 15 of 36 validation cases without porting about 1,300 lines of OpenSCG | [0003](../decisions/0003-typescript-domain-core.md) |
+| SP-02 | Snapshot files. `isomorphic-git` damaged its own history when the process was killed mid-save | [0008](../decisions/0008-snapshot-revision-storage.md) |
+| SP-03 (approximated) | All three likely signing shapes work. Two silent traps found, and a generic verifier is not enough | [0007](../decisions/0007-signer-adapters.md) |
+| SP-04 | Typst: the only candidate with a fully tagged PDF | [0005](../decisions/0005-typst-for-pdf.md) |
+| SP-05 | ExcelJS with a wrapper: 105 of 114 fields round-trip, formula injection blocked | [0006](../decisions/0006-exceljs-for-workbooks.md) |
+| SP-06 | Yes: the slice works with no network, and only loopback is ever contacted | — |
+| SP-07 | USWDS, with validation on the local server (the in-browser validator needs `unsafe-eval`) | [0004](../decisions/0004-validate-on-local-server.md) |
+| SP-08 | Resolved: the project owner is the practitioner reviewer | [0009](../decisions/0009-mvp-scope-clarifications.md) |
+| SP-09 | Not started: UDS/Zarf packaging, now in MVP scope | — |
+
+Each spike's folder under [`spikes/`](../../spikes/) has its own README with the method, the numbers and how to rerun it. The plan below is kept as written, so the expected results can be compared with what happened.
 
 This page lists what we need to learn before we commit to a design. Each spike answers one question, has a time box, and ends with a short write-up and, where a choice is made, a decision record in [`docs/decisions/`](../decisions/).
 
@@ -28,14 +45,15 @@ That changes the trade-off. A Python back end would have to reimplement or wrap 
 | ID | Question | Requirements | Time box | Needs outside help? | Status |
 | --- | --- | --- | --- | --- | --- |
 | [SP-00](#sp-00-can-we-build-on-knitliopenscg-010) | Can we build on `@knitli/openscg` 0.1.0? | M-06, M-11 | 0.5 day | No | **Done** |
-| [SP-01](#sp-01-what-should-the-application-be-built-on) | What should the application be built on? | All M | 3 days | No | Not started |
-| [SP-02](#sp-02-how-should-we-store-revisions) | How should we store revisions? | M-01, R-GIT-01 | 2 days | No | Not started |
-| [SP-03](#sp-03-how-does-an-oca-actually-sign) | How does an OCA actually sign? | M-09, M-10 | Open | **Yes** | Not started |
-| [SP-04](#sp-04-can-we-make-an-accessible-correctly-marked-pdf-offline) | Can we make an accessible, correctly marked PDF offline? | M-05, M-07, M-14 | 2 days | No | Not started |
-| [SP-05](#sp-05-what-goes-in-the-workbook-and-what-is-lost) | What goes in the workbook, and what is lost? | M-07 | 1.5 days | Partly | Not started |
-| [SP-06](#sp-06-can-we-prove-it-works-with-no-network) | Can we prove it works with no network? | M-12, M-13, §7 | 1 day | No | Not started |
-| [SP-07](#sp-07-which-ui-approach-gets-us-accessible-forms-fastest) | Which UI approach gets us accessible forms fastest? | M-14 | 2 days | Partly | Not started |
-| [SP-08](#sp-08-what-do-practitioners-need-to-see) | What do practitioners need to see? | Phase 0 gate | Ongoing | **Yes** | Not started |
+| [SP-01](#sp-01-what-should-the-application-be-built-on) | What should the application be built on? | All M | 3 days | No | **Done** |
+| [SP-02](#sp-02-how-should-we-store-revisions) | How should we store revisions? | M-01, R-GIT-01 | 2 days | No | **Done**; power-loss test still needed |
+| [SP-03](#sp-03-how-does-an-oca-actually-sign) | How does an OCA actually sign? | M-09, M-10 | Open | **Yes** | **Approximated**; real environment still needed |
+| [SP-04](#sp-04-can-we-make-an-accessible-correctly-marked-pdf-offline) | Can we make an accessible, correctly marked PDF offline? | M-05, M-07, M-14 | 2 days | No | **Done**; veraPDF run still needed |
+| [SP-05](#sp-05-what-goes-in-the-workbook-and-what-is-lost) | What goes in the workbook, and what is lost? | M-07 | 1.5 days | Partly | **Done**; DoD layout still needed |
+| [SP-06](#sp-06-can-we-prove-it-works-with-no-network) | Can we prove it works with no network? | M-12, M-13, §7 | 1 day | No | **Done** |
+| [SP-07](#sp-07-which-ui-approach-gets-us-accessible-forms-fastest) | Which UI approach gets us accessible forms fastest? | M-14 | 2 days | Partly | **Done**; screen-reader pass still needed |
+| [SP-08](#sp-08-what-do-practitioners-need-to-see) | What do practitioners need to see? | Phase 0 gate | Ongoing | No | **Resolved**: project owner reviews (decision 0009) |
+| [SP-09](#sp-09-can-we-ship-imprint-as-a-uds-package) | Can we ship Imprint as a UDS package? | R-UDS-01 to 04 | 3 days | No | Not started |
 
 Suggested order: SP-01 and SP-08 first (they shape everything else), then SP-02, SP-04 and SP-07 together, then SP-05 and SP-06. SP-03 starts now as a conversation, because it depends on people and environments we do not control.
 
@@ -56,9 +74,9 @@ We installed the published package and ran the whole OpenSCG conformance procedu
 
 Other things we learned:
 
-- **Small footprint.** 11 transitive packages, about 6.6 MB installed: `ajv`, `ajv-formats`, `asn1js`, `pkijs` and their dependencies. That is easy to mirror for an offline install (M-12) and to list in an SBOM.
+- **Small footprint.** 11 transitive packages, about 6.6 MB installed: `ajv`, `ajv-formats`, `asn1js`, `pkijs` and their dependencies. Easy to list in an SBOM. (The project owner confirms every target network has npm and PyPI mirrors, so distribution is not a concern.)
 - **Node 22 or later** is required.
-- **Open question for the browser.** `ajv` builds validators by generating JavaScript at run time. A strict Content Security Policy without `unsafe-eval` would block that in the browser. Options: run validation only on the local server, or ask OpenSCG to ship a precompiled ("standalone") validator. SP-01 should check which one we need.
+- **Open question for the browser.** `ajv` builds validators by generating JavaScript at run time. A strict Content Security Policy without `unsafe-eval` would block that in the browser. SP-07 confirmed it: the in-page validator fails with an `EvalError`. Validation runs on the local server instead ([decision 0004](../decisions/0004-validate-on-local-server.md)).
 
 **What would change this:** if a later OpenSCG release changes function names (the README says names may change before 1.0), the pinned version protects us until we upgrade on purpose. CI runs this spike on every pull request.
 
@@ -159,3 +177,26 @@ This is mostly discovery, not code. It needs people and access we do not have ye
 **Method.** Short interviews with a paper or clickable mock-up using LANTERN. Ask them to walk through adding a compilation entry and approving a revision. Record words they use that we do not.
 
 **Done when.** The phase 0 exit gate in the requirements is met: a practitioner confirms the vocabulary and the realistic examples.
+
+### SP-09: Can we ship Imprint as a UDS package?
+
+Added after the first round, when the project owner moved UDS into the first release ([decision 0009](../decisions/0009-mvp-scope-clarifications.md)).
+
+**Question.** Can the SP-01 slice be built into a container image and a UDS/Zarf package, then installed with no network on a local UDS Core test cluster?
+
+**Why early.** Packaging rules (read-only root file system, non-root user, where data lives, how a user reaches the app through UDS identity) should shape the app before most of it is written. Example: if the cluster mounts storage only at one path, the snapshot store (decision 0008) must write there and nowhere else.
+
+**Method.**
+
+- Build a minimal image of the slice and a Zarf package with pinned versions and an SBOM.
+- Deploy it on a local UDS Core test cluster (k3d), using only synthetic data.
+- Check:
+  - persistent storage, and that the snapshot store survives a pod restart;
+  - network policy: the app makes no calls out of the cluster (SP-06 again, inside UDS);
+  - logs contain no guide text;
+  - how the user reaches the app, and how UDS identity maps to the single user.
+
+**Open design point.** Inside a cluster, the app is no longer on the user's workstation, so the local signing paths (decision 0007, path B) cannot reach a token on the user's machine. Example: an OCA opening Imprint in a UDS cluster from a workstation with a card reader. The page would need path A (a browser integration) or path C (sign a file locally and upload the `.p7s`). Path C needs nothing new, so it is the likely first choice for UDS deployments.
+
+**Done when.** A decision record covers the package layout, the storage path, identity, and which signing path UDS deployments use.
+

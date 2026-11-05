@@ -1,0 +1,5 @@
+node_modules/
+out/*-a.pdf
+out/*-b.pdf
+out/offline-*.pdf
+out/chromium.html

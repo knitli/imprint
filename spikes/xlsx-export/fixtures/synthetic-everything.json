@@ -1,0 +1,280 @@
+{
+  "schema_version": "0.1.0",
+  "profile": "cnsi-core",
+  "synthetic": true,
+  "guide_id": "urn:uuid:5e1d0c3a-0000-4000-8000-00000000f005",
+  "revision_id": "2026-r3",
+  "title": "SYNTHETIC EXAMPLE — Every field, for the SP-05 workbook spike (NOT REAL GUIDANCE)",
+  "subject": "The fictional EMBER test rig, invented to exercise every OpenSCG field.",
+  "scope": "Spike fixture only. Contains no real classification guidance.",
+  "issuing_organization": {
+    "name": "Example Agency (fictional)",
+    "identifier": "EXA"
+  },
+  "point_of_contact": {
+    "name": "Jordan Example",
+    "position": "Security Program Manager (fictional)",
+    "organization": "Example Agency (fictional)",
+    "email": "poc@example.org",
+    "phone": "+1 555 0100"
+  },
+  "oca": {
+    "name": "Casey Sample",
+    "position": "Director (fictional)",
+    "personal_identifier": "EX-0001",
+    "highest_level": "TS"
+  },
+  "dates": {
+    "issued": "2026-10-01",
+    "last_reviewed": "2026-10-15",
+    "effective": "2026-11-01",
+    "next_review_due": "2031-10-01"
+  },
+  "lifecycle": {
+    "state": "candidate",
+    "supersedes": [
+      {
+        "guide_id": "urn:uuid:5e1d0c3a-0000-4000-8000-00000000f004",
+        "revision_id": "2025-r9",
+        "title": "EMBER guide (fictional), 2025"
+      }
+    ],
+    "superseded_by": [
+      {
+        "guide_id": "urn:uuid:5e1d0c3a-0000-4000-8000-00000000f006",
+        "revision_id": "2027-r1",
+        "title": "EMBER guide (fictional), 2027"
+      }
+    ],
+    "note": "Synthetic lifecycle note."
+  },
+  "document_markings": {
+    "classification": "U",
+    "banner": "UNCLASSIFIED — SYNTHETIC EXAMPLE",
+    "controls": [
+      "SYNTHETIC-CONTROL-A",
+      "SYNTHETIC-CONTROL-B"
+    ],
+    "classification_authority_block": {
+      "classified_by": "Casey Sample (fictional)",
+      "derived_from": "Synthetic source guide",
+      "reason": "1.4(a)",
+      "declassify_on": "25X1 (synthetic)"
+    },
+    "review": {
+      "status": "complete",
+      "reviewed_by": "Riley Reviewer (fictional)",
+      "reviewed_on": "2026-10-20"
+    }
+  },
+  "introduction": "Synthetic introduction.\nIt has two lines.",
+  "sections": [
+    {
+      "section_id": "general",
+      "title": "General",
+      "portion_marking": "(U)",
+      "description": "Synthetic section description."
+    },
+    {
+      "section_id": "perf",
+      "title": "Performance",
+      "portion_marking": "(U)"
+    }
+  ],
+  "entries": [
+    {
+      "entry_id": "gen-name",
+      "kind": "element",
+      "section_id": "general",
+      "portion_marking": "(U)",
+      "description": "The program name EMBER.",
+      "level": "U",
+      "regime": "cnsi",
+      "statements": {
+        "value": "Synthetic value.",
+        "damage": "Synthetic damage.",
+        "unclassified": "Synthetic unclassified statement."
+      },
+      "notes": "Synthetic note.",
+      "extensions": {
+        "org.example.spike": {
+          "must_understand": false,
+          "version": "1",
+          "data": {
+            "color": "blue"
+          }
+        }
+      }
+    },
+    {
+      "entry_id": "comp-1",
+      "kind": "compilation",
+      "section_id": "perf",
+      "portion_marking": "(U)",
+      "description": "The name together with the band.",
+      "level": "S",
+      "condition_text": "Both appear together.",
+      "exceptions_text": "Not when published in the synthetic fact sheet.",
+      "references": [
+        "gen-name",
+        "perf-band"
+      ],
+      "reason": {
+        "categories": [
+          "1.4(a)"
+        ],
+        "explanation": "Synthetic rationale."
+      },
+      "declassification": {
+        "kind": "relative_to_record_creation",
+        "years": 10
+      }
+    },
+    {
+      "entry_id": "perf-band",
+      "kind": "element",
+      "section_id": "perf",
+      "portion_marking": "(U)",
+      "description": "The operating band.",
+      "level_range": {
+        "lowest": "U",
+        "highest": "C",
+        "condition_text": "U as a band name; C to within 10 MHz."
+      },
+      "controls": [
+        {
+          "marking": "NOFORN",
+          "kind": "dissemination",
+          "note": "Synthetic control note."
+        },
+        {
+          "marking": "CUI//SP-EXAMPLE",
+          "kind": "cui"
+        }
+      ],
+      "reason": {
+        "categories": [
+          "1.4(e)",
+          "1.4(g)"
+        ],
+        "explanation": "Synthetic rationale."
+      },
+      "declassification": {
+        "kind": "date",
+        "date": "2040-12-31"
+      },
+      "sources": [
+        {
+          "citation": "Synthetic requirements document EX-001",
+          "uri": "https://example.org/ex-001"
+        },
+        {
+          "citation": "Synthetic memo EX-002"
+        }
+      ]
+    },
+    {
+      "entry_id": "perf-event",
+      "kind": "element",
+      "description": "A synthetic event-based item.",
+      "level": "C",
+      "reason": {
+        "categories": [
+          "1.4(b)"
+        ],
+        "explanation": "Synthetic rationale."
+      },
+      "declassification": {
+        "kind": "event",
+        "event_text": "Retirement of the last fictional unit."
+      }
+    },
+    {
+      "entry_id": "perf-exempt",
+      "kind": "element",
+      "description": "A synthetic exempted item.",
+      "level": "TS",
+      "reason": {
+        "categories": [
+          "1.4(c)"
+        ],
+        "explanation": "Synthetic rationale."
+      },
+      "declassification": {
+        "kind": "exemption",
+        "code": "25X1",
+        "until_date": "2060-01-01",
+        "until_event_text": "Or a synthetic event, whichever is first.",
+        "authority": {
+          "kind": "iscap_approval",
+          "reference": "Synthetic ISCAP approval EX-9",
+          "date": "2026-01-01",
+          "uri": "https://example.org/iscap-ex-9"
+        }
+      }
+    }
+  ],
+  "authority": {
+    "claimed_signer": {
+      "name": "Casey Sample",
+      "position": "Director (fictional)",
+      "personal_identifier": "EX-0001"
+    },
+    "claimed_delegation": {
+      "highest_level": "TS",
+      "program": "EMBER (fictional)",
+      "evidence": {
+        "kind": "delegation",
+        "reference": "Synthetic delegation letter EX-D1",
+        "date": "2026-01-02",
+        "uri": "https://example.org/d1"
+      }
+    }
+  },
+  "history": {
+    "previous_revisions": [
+      {
+        "revision_id": "2026-r2",
+        "payload_digest": {
+          "alg": "sha-256",
+          "value": "0000000000000000000000000000000000000000000000000000000000000000"
+        },
+        "note": "Synthetic."
+      }
+    ],
+    "events": [
+      {
+        "kind": "created",
+        "date": "2026-09-01",
+        "note": "Synthetic event."
+      }
+    ]
+  },
+  "extensions": {
+    "org.example.spike": {
+      "must_understand": true,
+      "data": [
+        1,
+        2,
+        3
+      ]
+    }
+  },
+  "review": {
+    "status": "pending",
+    "reviewed_by": "Riley Reviewer (fictional)",
+    "reviewed_on": "2026-10-21",
+    "evidence": [
+      {
+        "kind": "agency_notice",
+        "reference": "Synthetic notice EX-N1",
+        "date": "2026-10-19",
+        "uri": "https://example.org/n1"
+      },
+      {
+        "reference": "Synthetic second evidence item"
+      }
+    ],
+    "notes": "Synthetic review notes."
+  }
+}

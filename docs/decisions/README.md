@@ -15,4 +15,10 @@ A decision record explains one design choice: what we chose, what else we consid
 | --- | --- | --- |
 | [0001](0001-record-decisions.md) | Record design decisions in this folder | Accepted |
 | [0002](0002-pin-openscg.md) | Pin an exact OpenSCG release and run its conformance suite | Accepted |
-| [0003](0003-typescript-domain-core.md) | Build the domain core in TypeScript on the OpenSCG reference library | Proposed (waits on SP-01) |
+| [0003](0003-typescript-domain-core.md) | Build the domain core in TypeScript on the OpenSCG reference library | Accepted |
+| [0004](0004-validate-on-local-server.md) | Run validation on the local server; use USWDS for the interface | Accepted |
+| [0005](0005-typst-for-pdf.md) | Generate PDFs with Typst | Accepted |
+| [0006](0006-exceljs-for-workbooks.md) | Generate workbooks with ExcelJS behind a small wrapper | Accepted |
+| [0007](0007-signer-adapters.md) | Sign through small signer adapters; verify only with OpenSCG | Accepted |
+| [0008](0008-snapshot-revision-storage.md) | Store revisions as snapshot files; add Git later as an export | Accepted |
+| [0009](0009-mvp-scope-clarifications.md) | MVP scope clarifications: approximated signing environment, owner as practitioner reviewer, UDS at first release | Accepted |

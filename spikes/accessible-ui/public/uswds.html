@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Edit entry (USWDS variant) — Imprint spike</title>
+<link rel="stylesheet" href="/vendor/uswds/css/uswds.min.css">
+<link rel="stylesheet" href="/uswds-extra.css">
+</head>
+<body>
+<a class="usa-skipnav" href="#main-content">Skip to main content</a>
+<div class="usa-alert usa-alert--warning usa-alert--slim" role="region" aria-label="Synthetic data notice">
+  <div class="usa-alert__body"><p class="usa-alert__text"><strong>Synthetic data only.</strong> This is a research spike. Do not enter real, controlled or classified information.</p></div>
+</div>
+<header class="grid-container padding-y-2">
+  <p class="margin-0 text-base">Imprint spike SP-07 · USWDS variant</p>
+  <h1 class="margin-y-1">SYNTHETIC LANTERN guide</h1>
+</header>
+<div class="grid-container">
+  <div class="grid-row grid-gap">
+    <nav class="tablet:grid-col-4" aria-labelledby="entries-heading">
+      <h2 id="entries-heading" class="font-heading-md">Entries</h2>
+      <ul class="usa-sidenav" id="entry-list"></ul>
+    </nav>
+    <main class="tablet:grid-col-8" id="main-content">
+      <div class="usa-alert usa-alert--error" id="validator-blocked" hidden>
+        <div class="usa-alert__body"><h2 class="usa-alert__heading">Checks cannot run in this page</h2>
+        <p class="usa-alert__text">The page's security policy blocked the validator. Load this page with <code>?mode=server</code> to check on the local server.</p></div>
+      </div>
+      <div class="usa-alert usa-alert--error" id="error-summary" role="region" tabindex="-1" aria-labelledby="error-summary-heading" hidden>
+        <div class="usa-alert__body">
+          <h2 class="usa-alert__heading" id="error-summary-heading"></h2>
+          <ul class="usa-list" id="error-summary-list"></ul>
+        </div>
+      </div>
+      <div class="usa-alert usa-alert--info usa-alert--slim" id="review-note" hidden>
+        <div class="usa-alert__body"><p class="usa-alert__text"><strong>Needs a person to review (not an error in this entry):</strong> <span id="review-note-text"></span></p></div>
+      </div>
+      <h2 id="editor-heading" tabindex="-1">Edit entry</h2>
+      <form class="usa-form usa-form--large" id="entry-form" novalidate>
+        <div class="usa-form-group" id="group-description">
+          <label class="usa-label" for="field-description">What information does this entry cover?</label>
+          <span class="usa-hint" id="hint-description">Describe one precise item of information.</span>
+          <span class="usa-error-message" id="error-description" hidden></span>
+          <textarea class="usa-textarea" id="field-description" aria-describedby="hint-description"></textarea>
+        </div>
+        <div class="usa-form-group" id="group-level">
+          <label class="usa-label" for="field-level">Classification level</label>
+          <span class="usa-error-message" id="error-level" hidden></span>
+          <select class="usa-select" id="field-level">
+            <option value="">- Select -</option>
+            <option value="U">Unclassified (U)</option>
+            <option value="C">Confidential (C)</option>
+            <option value="S">Secret (S)</option>
+            <option value="TS">Top Secret (TS)</option>
+          </select>
+          <p class="usa-hint" id="level-range-note" hidden>This entry uses a range of levels with conditions. Choosing a single level here replaces the range.</p>
+        </div>
+        <fieldset class="usa-fieldset usa-form-group" id="group-categories" aria-describedby="hint-categories">
+          <legend class="usa-legend">Reason: E.O. 13526 section 1.4 categories</legend>
+          <span class="usa-hint" id="hint-categories">Required for classified entries. Choose all that apply.</span>
+          <span class="usa-error-message" id="error-categories" hidden></span>
+<!--CATEGORIES-USWDS-->
+        </fieldset>
+        <div class="usa-form-group" id="group-explanation">
+          <label class="usa-label" for="field-explanation">Why is this information classified?</label>
+          <span class="usa-hint" id="hint-explanation">A short, specific reason.</span>
+          <span class="usa-error-message" id="error-explanation" hidden></span>
+          <textarea class="usa-textarea" id="field-explanation" aria-describedby="hint-explanation"></textarea>
+        </div>
+        <div class="usa-form-group" id="group-declassification">
+          <label class="usa-label" for="field-declass-kind">Declassification instruction</label>
+          <span class="usa-error-message" id="error-declassification" hidden></span>
+          <select class="usa-select" id="field-declass-kind">
+            <option value="">- Select -</option>
+            <option value="date">On a specific date</option>
+            <option value="event">When an event happens</option>
+            <option value="relative_to_record_creation">A number of years after the record is created</option>
+            <option value="exemption">Exempt from automatic declassification</option>
+          </select>
+        </div>
+        <div class="usa-form-group" id="group-declass-date" hidden>
+          <label class="usa-label" for="field-declass-date">Date</label>
+          <span class="usa-error-message" id="error-declass-date" hidden></span>
+          <input class="usa-input" id="field-declass-date" type="date">
+        </div>
+        <div class="usa-form-group" id="group-declass-event" hidden>
+          <label class="usa-label" for="field-declass-event">Event</label>
+          <span class="usa-error-message" id="error-declass-event" hidden></span>
+          <input class="usa-input" id="field-declass-event" type="text">
+        </div>
+        <div class="usa-form-group" id="group-declass-years" hidden>
+          <label class="usa-label" for="field-declass-years">Years after the record is created</label>
+          <span class="usa-hint" id="hint-declass-years">Counted from when each record is made, not from the guide's date.</span>
+          <span class="usa-error-message" id="error-declass-years" hidden></span>
+          <input class="usa-input usa-input--small" id="field-declass-years" type="text" inputmode="numeric" aria-describedby="hint-declass-years">
+        </div>
+        <div class="usa-form-group" id="group-declass-code" hidden>
+          <label class="usa-label" for="field-declass-code">Exemption code</label>
+          <span class="usa-hint" id="hint-declass-code">Choosing a code does not prove the exemption was approved.</span>
+          <span class="usa-error-message" id="error-declass-code" hidden></span>
+          <input class="usa-input usa-input--medium" id="field-declass-code" type="text" aria-describedby="hint-declass-code">
+        </div>
+        <button class="usa-button margin-top-4" type="submit">Check this entry</button>
+        <p role="status" id="status" class="margin-top-2"></p>
+      </form>
+    </main>
+  </div>
+</div>
+<script src="/dist/uswds.js"></script>
+</body>
+</html>

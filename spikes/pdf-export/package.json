@@ -1,0 +1,13 @@
+{
+  "name": "@imprint-spikes/pdf-export",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Spike SP-04: compare PDF renderers for accessible, correctly marked SCG output. Synthetic data only.",
+  "license": "AGPL-3.0-only",
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "dependencies": {
+    "@knitli/openscg": "0.1.0",
+    "pdfmake": "0.2.20"
+  }
+}

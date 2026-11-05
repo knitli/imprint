@@ -1,0 +1,8 @@
+1.4(a)|Military plans, weapons systems, or operations
+1.4(b)|Foreign government information
+1.4(c)|Intelligence activities, intelligence sources or methods, or cryptology
+1.4(d)|Foreign relations or foreign activities of the United States, including confidential sources
+1.4(e)|Scientific, technological, or economic matters relating to national security
+1.4(f)|U.S. Government programs for safeguarding nuclear materials or facilities
+1.4(g)|Vulnerabilities or capabilities of systems, installations, infrastructures, projects, plans, or protection services relating to national security
+1.4(h)|The development, production, or use of weapons of mass destruction

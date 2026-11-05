@@ -1,0 +1,182 @@
+{
+  "schema_version": "0.1.0",
+  "profile": "cnsi-core",
+  "synthetic": true,
+  "guide_id": "urn:uuid:5e1d0c3a-0000-4000-8000-00000000a001",
+  "revision_id": "2026-r1",
+  "title": "SYNTHETIC EXAMPLE — Security Classification Guide for the LANTERN Training Sensor (NOT REAL GUIDANCE)",
+  "subject": "The fictional LANTERN training sensor, invented to demonstrate the OpenSCG format.",
+  "scope": "Applies only to this demonstration. Contains no real classification guidance and must not be used to classify anything.",
+  "issuing_organization": {
+    "name": "Example Agency (fictional)",
+    "identifier": "EXA"
+  },
+  "point_of_contact": {
+    "name": "Jordan Example",
+    "position": "Security Program Manager (fictional)",
+    "email": "poc@example.org"
+  },
+  "oca": {
+    "name": "Casey Sample",
+    "position": "Director, Example Programs (fictional)",
+    "highest_level": "S"
+  },
+  "dates": {
+    "issued": "2026-10-01",
+    "next_review_due": "2031-10-01"
+  },
+  "lifecycle": {
+    "state": "candidate"
+  },
+  "document_markings": {
+    "classification": "U",
+    "banner": "UNCLASSIFIED — SYNTHETIC EXAMPLE",
+    "review": {
+      "status": "pending"
+    }
+  },
+  "introduction": "This synthetic guide shows each kind of OpenSCG entry: an unclassified element, classified elements, a level range with conditions, an exemption, and a compilation.",
+  "authority": {
+    "claimed_signer": {
+      "name": "Casey Sample",
+      "position": "Director, Example Programs (fictional)"
+    },
+    "claimed_delegation": {
+      "highest_level": "S",
+      "program": "LANTERN (fictional)"
+    }
+  },
+  "review": {
+    "status": "not_started"
+  },
+  "entries": [
+    {
+      "kind": "element",
+      "entry_id": "gen-name",
+      "section_id": "general",
+      "portion_marking": "(U)",
+      "description": "The program name LANTERN and the fact that the program exists.",
+      "level": "U",
+      "statements": {
+        "unclassified": "The name is used in public outreach material."
+      }
+    },
+    {
+      "kind": "element",
+      "entry_id": "gen-sponsor",
+      "section_id": "general",
+      "portion_marking": "(U)",
+      "description": "The identity of the sponsoring office.",
+      "level": "U"
+    },
+    {
+      "kind": "element",
+      "entry_id": "perf-range",
+      "section_id": "performance",
+      "portion_marking": "(U)",
+      "description": "The maximum detection range of the sensor, stated as a specific figure.",
+      "level": "S",
+      "reason": {
+        "categories": [
+          "1.4(a)",
+          "1.4(e)"
+        ],
+        "explanation": "Synthetic rationale: knowing the exact range would let an adversary plan to stay just outside it."
+      },
+      "declassification": {
+        "kind": "relative_to_record_creation",
+        "years": 25
+      },
+      "statements": {
+        "damage": "Synthetic: an adversary could avoid detection."
+      },
+      "sources": [
+        {
+          "citation": "Synthetic requirements document EX-001"
+        }
+      ]
+    },
+    {
+      "kind": "element",
+      "entry_id": "perf-band",
+      "section_id": "performance",
+      "portion_marking": "(U)",
+      "description": "The operating frequency band of the sensor.",
+      "level_range": {
+        "lowest": "U",
+        "highest": "C",
+        "condition_text": "Unclassified when stated only as a general band name. Confidential when stated to within 10 MHz."
+      },
+      "reason": {
+        "categories": [
+          "1.4(e)"
+        ],
+        "explanation": "Synthetic rationale: a precise band would make the sensor easier to jam."
+      },
+      "declassification": {
+        "kind": "date",
+        "date": "2040-12-31"
+      }
+    },
+    {
+      "kind": "element",
+      "entry_id": "perf-weakness",
+      "section_id": "performance",
+      "portion_marking": "(U)",
+      "description": "Specific conditions under which the sensor fails to detect a target.",
+      "level": "S",
+      "reason": {
+        "categories": [
+          "1.4(g)"
+        ],
+        "explanation": "Synthetic rationale: describes a vulnerability of the system."
+      },
+      "declassification": {
+        "kind": "event",
+        "event_text": "Retirement of the last fielded LANTERN unit, as announced by the program office."
+      },
+      "controls": [
+        {
+          "marking": "NOFORN",
+          "kind": "dissemination"
+        }
+      ]
+    },
+    {
+      "kind": "compilation",
+      "entry_id": "comp-range-site",
+      "section_id": "performance",
+      "portion_marking": "(U)",
+      "description": "The sponsoring office together with the operating band, in the same document.",
+      "level": "S",
+      "condition_text": "Both items appear together in a way that associates the band with this sponsor.",
+      "references": [
+        "gen-sponsor",
+        "perf-band"
+      ],
+      "reason": {
+        "categories": [
+          "1.4(a)"
+        ],
+        "explanation": "Synthetic rationale: together they reveal a mission focus that neither reveals alone."
+      },
+      "declassification": {
+        "kind": "relative_to_record_creation",
+        "years": 10
+      },
+      "notes": "Each item alone keeps its own level; this entry applies only to the combination."
+    }
+  ],
+  "sections": [
+    {
+      "section_id": "general",
+      "title": "General program information",
+      "portion_marking": "(U)"
+    },
+    {
+      "section_id": "performance",
+      "title": "Performance",
+      "portion_marking": "(U)"
+    }
+  ]
+}

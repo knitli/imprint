@@ -1,0 +1,800 @@
+[
+  {
+    "field": "/schema_version",
+    "required": true,
+    "status": "mapped",
+    "tested": 4,
+    "note": ""
+  },
+  {
+    "field": "/profile",
+    "required": true,
+    "status": "mapped",
+    "tested": 4,
+    "note": ""
+  },
+  {
+    "field": "/synthetic",
+    "required": false,
+    "status": "mapped",
+    "tested": 4,
+    "note": ""
+  },
+  {
+    "field": "/guide_id",
+    "required": true,
+    "status": "mapped",
+    "tested": 4,
+    "note": ""
+  },
+  {
+    "field": "/revision_id",
+    "required": true,
+    "status": "mapped",
+    "tested": 4,
+    "note": ""
+  },
+  {
+    "field": "/title",
+    "required": true,
+    "status": "mapped",
+    "tested": 4,
+    "note": ""
+  },
+  {
+    "field": "/subject",
+    "required": false,
+    "status": "mapped",
+    "tested": 2,
+    "note": ""
+  },
+  {
+    "field": "/scope",
+    "required": false,
+    "status": "mapped",
+    "tested": 2,
+    "note": ""
+  },
+  {
+    "field": "/issuing_organization/name",
+    "required": true,
+    "status": "mapped",
+    "tested": 2,
+    "note": ""
+  },
+  {
+    "field": "/issuing_organization/identifier",
+    "required": false,
+    "status": "mapped",
+    "tested": 2,
+    "note": ""
+  },
+  {
+    "field": "/point_of_contact/name",
+    "required": false,
+    "status": "mapped",
+    "tested": 2,
+    "note": ""
+  },
+  {
+    "field": "/point_of_contact/position",
+    "required": false,
+    "status": "mapped",
+    "tested": 2,
+    "note": ""
+  },
+  {
+    "field": "/point_of_contact/organization",
+    "required": false,
+    "status": "mapped",
+    "tested": 1,
+    "note": ""
+  },
+  {
+    "field": "/point_of_contact/email",
+    "required": false,
+    "status": "mapped",
+    "tested": 2,
+    "note": ""
+  },
+  {
+    "field": "/point_of_contact/phone",
+    "required": false,
+    "status": "mapped",
+    "tested": 1,
+    "note": ""
+  },
+  {
+    "field": "/oca/name",
+    "required": false,
+    "status": "mapped",
+    "tested": 2,
+    "note": ""
+  },
+  {
+    "field": "/oca/position",
+    "required": false,
+    "status": "mapped",
+    "tested": 2,
+    "note": ""
+  },
+  {
+    "field": "/oca/personal_identifier",
+    "required": false,
+    "status": "mapped",
+    "tested": 1,
+    "note": ""
+  },
+  {
+    "field": "/oca/highest_level",
+    "required": false,
+    "status": "mapped",
+    "tested": 2,
+    "note": ""
+  },
+  {
+    "field": "/dates/issued",
+    "required": false,
+    "status": "mapped",
+    "tested": 2,
+    "note": ""
+  },
+  {
+    "field": "/dates/last_reviewed",
+    "required": false,
+    "status": "mapped",
+    "tested": 1,
+    "note": ""
+  },
+  {
+    "field": "/dates/effective",
+    "required": false,
+    "status": "mapped",
+    "tested": 1,
+    "note": ""
+  },
+  {
+    "field": "/dates/next_review_due",
+    "required": false,
+    "status": "mapped",
+    "tested": 2,
+    "note": ""
+  },
+  {
+    "field": "/lifecycle/state",
+    "required": true,
+    "status": "mapped",
+    "tested": 4,
+    "note": ""
+  },
+  {
+    "field": "/lifecycle/supersedes[]/guide_id",
+    "required": true,
+    "status": "mapped",
+    "tested": 1,
+    "note": ""
+  },
+  {
+    "field": "/lifecycle/supersedes[]/revision_id",
+    "required": false,
+    "status": "mapped",
+    "tested": 1,
+    "note": ""
+  },
+  {
+    "field": "/lifecycle/supersedes[]/title",
+    "required": false,
+    "status": "mapped",
+    "tested": 1,
+    "note": ""
+  },
+  {
+    "field": "/lifecycle/superseded_by[]/guide_id",
+    "required": true,
+    "status": "mapped",
+    "tested": 1,
+    "note": ""
+  },
+  {
+    "field": "/lifecycle/superseded_by[]/revision_id",
+    "required": false,
+    "status": "mapped",
+    "tested": 1,
+    "note": ""
+  },
+  {
+    "field": "/lifecycle/superseded_by[]/title",
+    "required": false,
+    "status": "mapped",
+    "tested": 1,
+    "note": ""
+  },
+  {
+    "field": "/lifecycle/note",
+    "required": false,
+    "status": "mapped",
+    "tested": 1,
+    "note": ""
+  },
+  {
+    "field": "/document_markings/classification",
+    "required": true,
+    "status": "mapped",
+    "tested": 4,
+    "note": ""
+  },
+  {
+    "field": "/document_markings/banner",
+    "required": false,
+    "status": "mapped",
+    "tested": 4,
+    "note": ""
+  },
+  {
+    "field": "/document_markings/controls",
+    "required": false,
+    "status": "mapped",
+    "tested": 2,
+    "note": ""
+  },
+  {
+    "field": "/document_markings/classification_authority_block/classified_by",
+    "required": false,
+    "status": "mapped",
+    "tested": 1,
+    "note": ""
+  },
+  {
+    "field": "/document_markings/classification_authority_block/derived_from",
+    "required": false,
+    "status": "mapped",
+    "tested": 1,
+    "note": ""
+  },
+  {
+    "field": "/document_markings/classification_authority_block/reason",
+    "required": false,
+    "status": "mapped",
+    "tested": 1,
+    "note": ""
+  },
+  {
+    "field": "/document_markings/classification_authority_block/declassify_on",
+    "required": false,
+    "status": "mapped",
+    "tested": 1,
+    "note": ""
+  },
+  {
+    "field": "/document_markings/review/status",
+    "required": true,
+    "status": "mapped",
+    "tested": 2,
+    "note": ""
+  },
+  {
+    "field": "/document_markings/review/reviewed_by",
+    "required": false,
+    "status": "mapped",
+    "tested": 1,
+    "note": ""
+  },
+  {
+    "field": "/document_markings/review/reviewed_on",
+    "required": false,
+    "status": "mapped",
+    "tested": 1,
+    "note": ""
+  },
+  {
+    "field": "/introduction",
+    "required": false,
+    "status": "mapped",
+    "tested": 2,
+    "note": ""
+  },
+  {
+    "field": "/sections[]/section_id",
+    "required": true,
+    "status": "mapped",
+    "tested": 4,
+    "note": ""
+  },
+  {
+    "field": "/sections[]/title",
+    "required": true,
+    "status": "mapped",
+    "tested": 4,
+    "note": ""
+  },
+  {
+    "field": "/sections[]/portion_marking",
+    "required": false,
+    "status": "mapped",
+    "tested": 4,
+    "note": ""
+  },
+  {
+    "field": "/sections[]/description",
+    "required": false,
+    "status": "mapped",
+    "tested": 1,
+    "note": ""
+  },
+  {
+    "field": "/entries[]/entry_id",
+    "required": true,
+    "status": "mapped",
+    "tested": 25,
+    "note": ""
+  },
+  {
+    "field": "/entries[]/kind",
+    "required": true,
+    "status": "mapped",
+    "tested": 25,
+    "note": ""
+  },
+  {
+    "field": "/entries[]/section_id",
+    "required": false,
+    "status": "mapped",
+    "tested": 9,
+    "note": ""
+  },
+  {
+    "field": "/entries[]/portion_marking",
+    "required": false,
+    "status": "mapped",
+    "tested": 9,
+    "note": ""
+  },
+  {
+    "field": "/entries[]/regime",
+    "required": false,
+    "status": "mapped",
+    "tested": 1,
+    "note": ""
+  },
+  {
+    "field": "/entries[]/description",
+    "required": true,
+    "status": "mapped",
+    "tested": 25,
+    "note": ""
+  },
+  {
+    "field": "/entries[]/level",
+    "required": false,
+    "status": "mapped",
+    "tested": 23,
+    "note": ""
+  },
+  {
+    "field": "/entries[]/level_range/lowest",
+    "required": true,
+    "status": "mapped",
+    "tested": 2,
+    "note": ""
+  },
+  {
+    "field": "/entries[]/level_range/highest",
+    "required": true,
+    "status": "mapped",
+    "tested": 2,
+    "note": ""
+  },
+  {
+    "field": "/entries[]/level_range/condition_text",
+    "required": true,
+    "status": "mapped",
+    "tested": 2,
+    "note": ""
+  },
+  {
+    "field": "/entries[]/condition_text",
+    "required": false,
+    "status": "mapped",
+    "tested": 3,
+    "note": ""
+  },
+  {
+    "field": "/entries[]/exceptions_text",
+    "required": false,
+    "status": "mapped",
+    "tested": 1,
+    "note": ""
+  },
+  {
+    "field": "/entries[]/references",
+    "required": false,
+    "status": "mapped",
+    "tested": 6,
+    "note": ""
+  },
+  {
+    "field": "/entries[]/controls[]/marking",
+    "required": true,
+    "status": "mapped",
+    "tested": 3,
+    "note": ""
+  },
+  {
+    "field": "/entries[]/controls[]/kind",
+    "required": true,
+    "status": "mapped",
+    "tested": 3,
+    "note": ""
+  },
+  {
+    "field": "/entries[]/controls[]/note",
+    "required": false,
+    "status": "mapped",
+    "tested": 1,
+    "note": ""
+  },
+  {
+    "field": "/entries[]/reason/categories",
+    "required": true,
+    "status": "mapped",
+    "tested": 11,
+    "note": ""
+  },
+  {
+    "field": "/entries[]/reason/explanation",
+    "required": true,
+    "status": "mapped",
+    "tested": 9,
+    "note": ""
+  },
+  {
+    "field": "/entries[]/declassification/kind",
+    "required": true,
+    "status": "mapped",
+    "tested": 9,
+    "note": ""
+  },
+  {
+    "field": "/entries[]/declassification/date",
+    "required": true,
+    "status": "mapped",
+    "tested": 2,
+    "note": ""
+  },
+  {
+    "field": "/entries[]/declassification/event_text",
+    "required": true,
+    "status": "mapped",
+    "tested": 2,
+    "note": ""
+  },
+  {
+    "field": "/entries[]/declassification/years",
+    "required": true,
+    "status": "mapped",
+    "tested": 4,
+    "note": ""
+  },
+  {
+    "field": "/entries[]/declassification/code",
+    "required": true,
+    "status": "mapped",
+    "tested": 1,
+    "note": ""
+  },
+  {
+    "field": "/entries[]/declassification/until_date",
+    "required": false,
+    "status": "mapped",
+    "tested": 1,
+    "note": ""
+  },
+  {
+    "field": "/entries[]/declassification/until_event_text",
+    "required": false,
+    "status": "mapped",
+    "tested": 1,
+    "note": ""
+  },
+  {
+    "field": "/entries[]/declassification/authority/kind",
+    "required": false,
+    "status": "mapped",
+    "tested": 1,
+    "note": ""
+  },
+  {
+    "field": "/entries[]/declassification/authority/reference",
+    "required": true,
+    "status": "mapped",
+    "tested": 1,
+    "note": ""
+  },
+  {
+    "field": "/entries[]/declassification/authority/date",
+    "required": false,
+    "status": "mapped",
+    "tested": 1,
+    "note": ""
+  },
+  {
+    "field": "/entries[]/declassification/authority/uri",
+    "required": false,
+    "status": "mapped",
+    "tested": 1,
+    "note": ""
+  },
+  {
+    "field": "/entries[]/sources[]/citation",
+    "required": true,
+    "status": "mapped",
+    "tested": 3,
+    "note": ""
+  },
+  {
+    "field": "/entries[]/sources[]/uri",
+    "required": false,
+    "status": "mapped",
+    "tested": 1,
+    "note": ""
+  },
+  {
+    "field": "/entries[]/statements/value",
+    "required": false,
+    "status": "mapped",
+    "tested": 1,
+    "note": ""
+  },
+  {
+    "field": "/entries[]/statements/damage",
+    "required": false,
+    "status": "mapped",
+    "tested": 2,
+    "note": ""
+  },
+  {
+    "field": "/entries[]/statements/unclassified",
+    "required": false,
+    "status": "mapped",
+    "tested": 2,
+    "note": ""
+  },
+  {
+    "field": "/entries[]/notes",
+    "required": false,
+    "status": "mapped",
+    "tested": 3,
+    "note": ""
+  },
+  {
+    "field": "/entries[]/extensions/*/must_understand",
+    "required": true,
+    "status": "not mapped",
+    "tested": 1,
+    "note": "Same as guide-level extensions."
+  },
+  {
+    "field": "/entries[]/extensions/*/version",
+    "required": false,
+    "status": "not mapped",
+    "tested": 1,
+    "note": "Same as guide-level extensions."
+  },
+  {
+    "field": "/entries[]/extensions/*/data",
+    "required": true,
+    "status": "not mapped",
+    "tested": 1,
+    "note": "Same as guide-level extensions."
+  },
+  {
+    "field": "/authority/claimed_signer/name",
+    "required": false,
+    "status": "mapped",
+    "tested": 2,
+    "note": ""
+  },
+  {
+    "field": "/authority/claimed_signer/position",
+    "required": false,
+    "status": "mapped",
+    "tested": 2,
+    "note": ""
+  },
+  {
+    "field": "/authority/claimed_signer/personal_identifier",
+    "required": false,
+    "status": "mapped",
+    "tested": 1,
+    "note": ""
+  },
+  {
+    "field": "/authority/claimed_delegation/highest_level",
+    "required": true,
+    "status": "mapped",
+    "tested": 2,
+    "note": ""
+  },
+  {
+    "field": "/authority/claimed_delegation/program",
+    "required": false,
+    "status": "mapped",
+    "tested": 2,
+    "note": ""
+  },
+  {
+    "field": "/authority/claimed_delegation/evidence/kind",
+    "required": false,
+    "status": "mapped",
+    "tested": 1,
+    "note": ""
+  },
+  {
+    "field": "/authority/claimed_delegation/evidence/reference",
+    "required": true,
+    "status": "mapped",
+    "tested": 1,
+    "note": ""
+  },
+  {
+    "field": "/authority/claimed_delegation/evidence/date",
+    "required": false,
+    "status": "mapped",
+    "tested": 1,
+    "note": ""
+  },
+  {
+    "field": "/authority/claimed_delegation/evidence/uri",
+    "required": false,
+    "status": "mapped",
+    "tested": 1,
+    "note": ""
+  },
+  {
+    "field": "/history/previous_revisions[]/revision_id",
+    "required": true,
+    "status": "mapped",
+    "tested": 1,
+    "note": ""
+  },
+  {
+    "field": "/history/previous_revisions[]/payload_digest/alg",
+    "required": true,
+    "status": "mapped",
+    "tested": 1,
+    "note": ""
+  },
+  {
+    "field": "/history/previous_revisions[]/payload_digest/value",
+    "required": true,
+    "status": "mapped",
+    "tested": 1,
+    "note": ""
+  },
+  {
+    "field": "/history/previous_revisions[]/note",
+    "required": false,
+    "status": "mapped",
+    "tested": 1,
+    "note": ""
+  },
+  {
+    "field": "/history/events[]/kind",
+    "required": true,
+    "status": "mapped",
+    "tested": 1,
+    "note": ""
+  },
+  {
+    "field": "/history/events[]/date",
+    "required": true,
+    "status": "mapped",
+    "tested": 1,
+    "note": ""
+  },
+  {
+    "field": "/history/events[]/note",
+    "required": false,
+    "status": "mapped",
+    "tested": 1,
+    "note": ""
+  },
+  {
+    "field": "/extensions/*/must_understand",
+    "required": true,
+    "status": "not mapped",
+    "tested": 1,
+    "note": "Extension data can be any JSON and may be must-understand. It stays in the JSON only; the loss report lists it."
+  },
+  {
+    "field": "/extensions/*/version",
+    "required": false,
+    "status": "not mapped",
+    "tested": 0,
+    "note": "Extension data can be any JSON and may be must-understand. It stays in the JSON only; the loss report lists it."
+  },
+  {
+    "field": "/extensions/*/data",
+    "required": true,
+    "status": "not mapped",
+    "tested": 3,
+    "note": "Extension data can be any JSON and may be must-understand. It stays in the JSON only; the loss report lists it."
+  },
+  {
+    "field": "/review/status",
+    "required": true,
+    "status": "mapped",
+    "tested": 2,
+    "note": ""
+  },
+  {
+    "field": "/review/reviewed_by",
+    "required": false,
+    "status": "mapped",
+    "tested": 1,
+    "note": ""
+  },
+  {
+    "field": "/review/reviewed_on",
+    "required": false,
+    "status": "mapped",
+    "tested": 1,
+    "note": ""
+  },
+  {
+    "field": "/review/evidence[]/kind",
+    "required": false,
+    "status": "mapped",
+    "tested": 1,
+    "note": ""
+  },
+  {
+    "field": "/review/evidence[]/reference",
+    "required": true,
+    "status": "mapped",
+    "tested": 2,
+    "note": ""
+  },
+  {
+    "field": "/review/evidence[]/date",
+    "required": false,
+    "status": "mapped",
+    "tested": 1,
+    "note": ""
+  },
+  {
+    "field": "/review/evidence[]/uri",
+    "required": false,
+    "status": "mapped",
+    "tested": 1,
+    "note": ""
+  },
+  {
+    "field": "/review/notes",
+    "required": false,
+    "status": "mapped",
+    "tested": 1,
+    "note": ""
+  },
+  {
+    "field": "/attestations[]/format",
+    "required": true,
+    "status": "not mapped",
+    "tested": 0,
+    "note": "Signatures are binary and travel as the detached attestation next to the workbook, not inside it."
+  },
+  {
+    "field": "/attestations[]/statement",
+    "required": true,
+    "status": "not mapped",
+    "tested": 0,
+    "note": "Signatures are binary and travel as the detached attestation next to the workbook, not inside it."
+  },
+  {
+    "field": "/attestations[]/signature",
+    "required": true,
+    "status": "not mapped",
+    "tested": 0,
+    "note": "Signatures are binary and travel as the detached attestation next to the workbook, not inside it."
+  }
+]
