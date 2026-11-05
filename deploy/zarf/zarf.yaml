@@ -1,0 +1,68 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+#
+# Imprint as a Zarf package for UDS Core (R-UDS-01 to R-UDS-04, decision 0009).
+#
+# Build connected:     uds zarf package create deploy/zarf --confirm
+# Move the .tar.zst file through your approved transfer process.
+# Deploy disconnected: uds zarf package deploy zarf-package-imprint-*.tar.zst --confirm
+#
+# Packaging is not an authorization to operate. See docs/deploy-uds.md.
+
+kind: ZarfPackageConfig
+metadata:
+  name: imprint
+  description: "Imprint: write, check, sign and export security classification guides (OpenSCG). Not an official government tool."
+  version: 0.1.0-dev
+  url: https://github.com/knitli/imprint
+  source: https://github.com/knitli/imprint
+  vendor: Knitli Inc.
+  authors: Knitli Inc.
+  annotations:
+    dev.uds.title: Imprint
+    dev.uds.tagline: Security classification guide authoring (OpenSCG)
+    dev.uds.categories: Document Management
+
+variables:
+  - name: DOMAIN
+    description: "Base domain of the UDS Core tenant gateway. Imprint is served at imprint.<DOMAIN>."
+    default: uds.dev
+    prompt: false
+  - name: SSO_GROUP
+    description: "Keycloak group whose members may use Imprint. Change this for any real deployment."
+    default: "/UDS Core/Admin"
+    prompt: false
+  - name: DATA_SIZE
+    description: "Size of the volume that holds guides."
+    default: 1Gi
+    prompt: false
+  - name: MODE
+    description: "\"local\" (default) or \"demo\". Demo accepts only synthetic guides and keeps nothing after a restart."
+    default: local
+    prompt: false
+
+components:
+  - name: imprint
+    required: true
+    description: Imprint server, its storage, and the UDS Package resource that wires ingress, SSO and network policy.
+    images:
+      - ghcr.io/knitli/imprint:0.1.0-dev
+    manifests:
+      - name: imprint
+        namespace: imprint
+        files:
+          - manifests/namespace.yaml
+          - manifests/storage.yaml
+          - manifests/deployment.yaml
+          - manifests/service.yaml
+          - manifests/uds-package.yaml
+    actions:
+      onDeploy:
+        after:
+          - description: Wait for Imprint to report healthy
+            wait:
+              cluster:
+                kind: Deployment
+                name: imprint
+                namespace: imprint
+                condition: Available
+            maxTotalSeconds: 300

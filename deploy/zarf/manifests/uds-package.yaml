@@ -1,0 +1,31 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+#
+# The UDS Operator reads this and sets up, for Imprint:
+#  - ingress at https://imprint.<DOMAIN> through the tenant gateway;
+#  - Keycloak SSO enforced by Authservice in front of the app, limited to one group;
+#  - default-deny network policies. Imprint needs no outbound access at all,
+#    so none is allowed: it cannot reach the internet or other namespaces.
+apiVersion: uds.dev/v1alpha1
+kind: Package
+metadata:
+  name: imprint
+  namespace: imprint
+spec:
+  network:
+    expose:
+      - service: imprint
+        selector:
+          app.kubernetes.io/name: imprint
+        gateway: tenant
+        host: imprint
+        port: 8460
+  sso:
+    - name: Imprint
+      clientId: uds-imprint
+      redirectUris:
+        - "https://imprint.###ZARF_VAR_DOMAIN###/login"
+      enableAuthserviceSelector:
+        app.kubernetes.io/name: imprint
+      groups:
+        anyOf:
+          - "###ZARF_VAR_SSO_GROUP###"

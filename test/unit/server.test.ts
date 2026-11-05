@@ -36,6 +36,22 @@ describe("web server", () => {
     assert.equal(status, 421);
   });
 
+  it("answers health checks from any host name, and nothing else", async () => {
+    const get = (path: string, host: string) =>
+      new Promise<number | undefined>((resolve, reject) => {
+        const u = new URL(s.base);
+        request({ host: u.hostname, port: u.port, path, headers: { host } }, (res) => {
+          res.resume();
+          resolve(res.statusCode);
+        })
+          .on("error", reject)
+          .end();
+      });
+    assert.equal(await get("/healthz", "10.42.0.7:8460"), 200);
+    assert.equal(await get("/", "10.42.0.7:8460"), 421);
+    assert.equal(await get("/healthz?x=1", "10.42.0.7:8460"), 421);
+  });
+
   it("refuses form posts from another site (CSRF)", async () => {
     const cross = await post(
       s.base,

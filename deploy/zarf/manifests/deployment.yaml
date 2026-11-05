@@ -1,0 +1,86 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+#
+# One replica: the MVP is a single-user application with file storage
+# (decision 0008). Recreate, so two pods never write the same volume.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: imprint
+  namespace: imprint
+  labels:
+    app.kubernetes.io/name: imprint
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: imprint
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: imprint
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: imprint
+          image: ghcr.io/knitli/imprint:0.1.0-dev
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8460
+          env:
+            - name: IMPRINT_MODE
+              value: "###ZARF_VAR_MODE###"
+            # Requests arrive through the gateway with this host name. The
+            # server refuses any other (DNS rebinding protection).
+            - name: IMPRINT_ALLOWED_HOSTS
+              value: "imprint.###ZARF_VAR_DOMAIN###"
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 30
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              memory: 1Gi
+          volumeMounts:
+            - name: data
+              mountPath: /data
+            - name: trust
+              mountPath: /trust
+              readOnly: true
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: imprint-data
+        - name: trust
+          secret:
+            secretName: imprint-trust
+            optional: true
+        - name: tmp
+          emptyDir:
+            sizeLimit: 256Mi
