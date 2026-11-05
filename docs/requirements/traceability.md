@@ -16,10 +16,10 @@ This table tracks each Imprint requirement from [requirements.md](requirements.m
 | M-06 | Actionable checks; never "compliant" | SP-00, SP-07 | `validate`, `isApprovalReady`, `RULES` | In progress: findings grouped by severity, linked to fields |
 | M-07 | JSON, PDF and XLSX from one frozen revision | SP-04, SP-05 | `canonicalize`, `payloadDigest`, `buildReleaseManifest` | In progress: exports, unsigned release manifest and bundle; cross-output tests in `test/unit/exports.test.ts` |
 | M-08 | Import with no silent loss | SP-01 | `parseStrict`, `validate`, `compareForLoss` | In progress: strict import, loss check, signed files must still match |
-| M-09 | Sign with an existing credential | SP-03 | `buildApprovalStatement`, `verifyAttestation` | Researching (SoftHSM2 PKCS#11 in Chromium is the MVP acceptance environment, decision 0009) |
-| M-10 | Separate draft, signed, verified and authority states | SP-03 | `verifyAttestation` | Researching (SP-03 showed each state reported separately) |
+| M-09 | Sign with an existing credential | SP-03 | `buildApprovalStatement`, `verifyAttestation` | In progress: external-tool and PKCS#11 helper paths, tested against SoftHSM2 (decision 0009 acceptance environment) |
+| M-10 | Separate draft, signed, verified and authority states | SP-03 | `verifyAttestation` | In progress: per-result display, human authority review recorded separately, OpenSCG headline wording |
 | M-11 | Declared OpenSCG version; conformance | SP-00 | whole suite | In progress: validation suite runs through Imprint's service in CI |
-| M-12 | No network for core functions | SP-06 | — | Researching (SP-06 done for the slice) |
+| M-12 | No network for core functions | SP-06 | — | In progress: no network calls; trust anchors and CRLs supplied offline; unknown revocation shown and handled by local policy |
 | M-13 | Synthetic-only, labeled public demo | SP-06 | — | In progress: demo mode refuses non-synthetic guides, labels every page, logs no content |
 | M-14 | Accessible forms and keyboard use | SP-07, SP-04 | — | In progress: keyboard-only end-to-end test with axe on every page |
 

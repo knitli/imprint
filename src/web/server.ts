@@ -20,6 +20,7 @@ import type { Finding } from "@knitli/openscg";
 import { payloadDigest } from "@knitli/openscg";
 import { ExportService, type RevisionExport } from "../core/exports.ts";
 import { type Doc, type GuideService, type Level, MAX_GUIDE_BYTES, ServiceError } from "../core/service.ts";
+import { type AuthorityReview, SigningService } from "../core/signing.ts";
 import { PdfUnavailable } from "../export/pdf.ts";
 import {
   detailsToForm,
@@ -30,7 +31,9 @@ import {
   parseDetailsForm,
   parseEntryForm,
   parseMarkingsForm,
+  parseReviewForm,
   parseSectionsForm,
+  reviewToForm,
   sectionsToForm,
 } from "./forms.ts";
 import type { Safe } from "./html.ts";
@@ -42,8 +45,10 @@ import {
   markingsPage,
   messagePage,
   overviewPage,
+  type RevisionData,
   revisionPage,
   sectionsPage,
+  trustPage,
 } from "./pages.ts";
 import { layout, type PageOptions } from "./ui.ts";
 
@@ -53,6 +58,8 @@ export interface ServerConfig {
   readonly demo: boolean;
   /** Extra Host header values to accept, for example the name a cluster ingress uses. */
   readonly allowedHosts: readonly string[];
+  /** Folder holding trust anchors, CRLs and policy (see src/core/trust.ts). */
+  readonly trustDir: string;
 }
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -123,7 +130,8 @@ async function readUpload(req: IncomingMessage, field: string): Promise<Uint8Arr
     body: new Uint8Array(body),
   }).formData();
   const file = data.get(field);
-  if (!file || typeof file === "string") throw new HttpError(400, "Choose a file to import.");
+  if (!file || typeof file === "string" || file.size === 0)
+    throw new HttpError(400, "Choose a file to upload.");
   return new Uint8Array(await file.arrayBuffer());
 }
 
@@ -213,6 +221,33 @@ export function createImprintServer(service: GuideService, config: ServerConfig)
   ];
 
   const exports = new ExportService(service);
+  const signing = new SigningService(service, exports, config.trustDir);
+
+  async function revisionData(
+    key: string,
+    revisionId: string,
+    reviewForm?: Form,
+    reviewErrors: readonly FieldError[] = [],
+  ): Promise<RevisionData> {
+    let statementText: string | null = null;
+    let statementProblem: string | null = null;
+    try {
+      statementText = (await signing.statement(key, revisionId)).statement.statement_text;
+    } catch (e) {
+      if (!(e instanceof ServiceError)) throw e;
+      statementProblem = e.message;
+    }
+    const { summary } = await signing.trust();
+    return {
+      statementText,
+      statementProblem,
+      attestations: await signing.attestations(key, revisionId),
+      manifestSignatures: await signing.manifestSignatures(key, revisionId),
+      trust: summary,
+      reviewForm: reviewForm ?? reviewToForm((await signing.review(key, revisionId)) as unknown as Doc),
+      reviewErrors,
+    };
+  }
 
   function entryFindings(findings: readonly Finding[], index: number): Finding[] {
     const prefix = `/entries/${index}`;
@@ -236,6 +271,14 @@ export function createImprintServer(service: GuideService, config: ServerConfig)
     if (path === "/assets/app.css" || path === "/assets/app.js")
       return serveStatic(res, PUBLIC, path.slice("/assets/".length));
 
+    if (path === "/trust" && method === "GET") {
+      return page(
+        res,
+        200,
+        { title: "Trust settings", breadcrumbs: [{ href: "/", label: "Guides" }] },
+        trustPage((await signing.trust()).summary),
+      );
+    }
     if (path === "/" && method === "GET") {
       return page(
         res,
@@ -426,24 +469,86 @@ export function createImprintServer(service: GuideService, config: ServerConfig)
       await service.newRevision(key, (f.get("revision_id") ?? "").trim());
       return redirect(res, `${base}?saved=new-revision`);
     }
-    const rm =
-      /^\/revisions\/([A-Za-z0-9][A-Za-z0-9._-]{0,63})(?:\/(guide\.json|guide\.pdf|guide\.xlsx|release-manifest\.json|release\.zip))?$/.exec(
-        sub,
-      );
-    if (rm && method === "GET") {
+    const rm = /^\/revisions\/([A-Za-z0-9][A-Za-z0-9._-]{0,63})(?:\/([a-z.-]+))?$/.exec(sub);
+    if (rm) {
       const revisionId = rm[1] as string;
-      if (rm[2]) {
-        const kind = REVISION_FILES[rm[2]] as RevisionExport;
-        const file = await exports.revisionFile(key, revisionId, kind);
-        return download(res, file.bytes, file.name, file.type);
-      }
+      const action = rm[2] ?? "";
+      const revBase = `${base}/revisions/${revisionId}`;
       const rev = await service.revision(key, revisionId);
-      return page(
-        res,
-        200,
-        { title: `Revision ${rev.record.revision_id}`, synthetic, flash, breadcrumbs: crumbs(key, title) },
-        revisionPage(view, rev.record, rev.doc),
-      );
+      const revOpts = {
+        title: `Revision ${rev.record.revision_id}`,
+        synthetic,
+        flash,
+        breadcrumbs: crumbs(key, title),
+      };
+      if (method === "GET") {
+        if (action === "")
+          return page(
+            res,
+            200,
+            revOpts,
+            revisionPage(view, rev.record, rev.doc, await revisionData(key, revisionId)),
+          );
+        const kind = REVISION_FILES[action];
+        if (kind) {
+          const file = await exports.revisionFile(key, revisionId, kind);
+          return download(res, file.bytes, file.name, file.type);
+        }
+        if (action === "approval-statement.bin") {
+          const { bytes } = await signing.statement(key, revisionId);
+          return download(res, bytes, `${revisionId}_approval-statement.bin`, "application/octet-stream");
+        }
+        if (action === "approval-statement.json") {
+          const { statement } = await signing.statement(key, revisionId);
+          return download(
+            res,
+            `${JSON.stringify(statement, null, 2)}\n`,
+            `${revisionId}_approval-statement.json`,
+          );
+        }
+        if (action === "release-manifest.bin") {
+          const { bytes } = await signing.manifest(key, revisionId);
+          return download(res, bytes, `${revisionId}_release-manifest.bin`, "application/octet-stream");
+        }
+        if (action === "signed-guide.json") {
+          return download(res, await signing.signedGuide(key, revisionId), `${revisionId}_signed-guide.json`);
+        }
+      }
+      if (method === "POST") {
+        if (action === "signatures") {
+          const { added } = await signing.addSignature(key, revisionId, await readUpload(req, "signature"));
+          return redirect(res, `${revBase}?saved=${added ? "signed" : "signed-again"}`);
+        }
+        if (action === "manifest-signatures") {
+          const { added } = await signing.addManifestSignature(
+            key,
+            revisionId,
+            await readUpload(req, "signature"),
+          );
+          return redirect(res, `${revBase}?saved=${added ? "manifest-signed" : "signed-again"}`);
+        }
+        if (action === "review") {
+          const f = await readForm(req);
+          const parsed = parseReviewForm(f);
+          if (parsed.errors.length) {
+            return page(
+              res,
+              400,
+              revOpts,
+              revisionPage(view, rev.record, rev.doc, await revisionData(key, revisionId, f, parsed.errors)),
+            );
+          }
+          // The form edits the first piece of evidence; keep any others already recorded.
+          const existing = (await signing.review(key, revisionId)).evidence ?? [];
+          const first = (parsed.value.evidence as AuthorityReview["evidence"]) ?? [];
+          const evidence = [...first, ...existing.slice(1)];
+          await signing.saveReview(key, revisionId, {
+            ...(parsed.value as unknown as AuthorityReview),
+            ...(evidence.length ? { evidence } : {}),
+          });
+          return redirect(res, `${revBase}?saved=review`);
+        }
+      }
     }
     throw new HttpError(404, "Not found.");
   }
@@ -479,7 +584,7 @@ export function createImprintServer(service: GuideService, config: ServerConfig)
   });
 }
 
-const REVISION_FILES: Record<string, RevisionExport> = {
+const REVISION_FILES: Record<string, RevisionExport | undefined> = {
   "guide.json": "json",
   "guide.pdf": "pdf",
   "guide.xlsx": "xlsx",
@@ -495,4 +600,8 @@ const FLASH: Record<string, string> = {
   "imported-frozen": "Imported. The file was signed, so it is stored as a frozen revision.",
   frozen: "Revision frozen. Its content can no longer change.",
   "new-revision": "New draft revision started. Earlier revisions are unchanged.",
+  signed: "Signature stored. Its verification result is shown below.",
+  "signed-again": "That signature was already stored.",
+  "manifest-signed": "Release manifest signature stored.",
+  review: "Authority review saved. It is kept outside the signed content.",
 };

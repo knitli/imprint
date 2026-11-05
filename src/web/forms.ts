@@ -657,3 +657,47 @@ export function sectionsToForm(doc: Doc): Form {
 export function rows(form: Form, prefix: string): number[] {
   return rowIndexes(form, prefix);
 }
+
+// ---- Authority review (spec 4.7) ---------------------------------------------
+
+export const REVIEW_STATUS = ["not_started", "pending", "complete", "rejected"] as const;
+
+/** Parse the authority review form. Recorded by a person; never inferred from a signature. */
+export function parseReviewForm(form: Form): ParseResult<Doc> {
+  const c = new Collector(form);
+  const status = c.oneOf("authority_status", REVIEW_STATUS, "review status");
+  if (!status && !c.errors.some((e) => e.field === "authority_status"))
+    c.error("authority_status", "Choose the review status.");
+  const reviewedBy = c.text("authority_reviewed_by");
+  const reviewedOn = c.date("authority_reviewed_on");
+  if (status === "complete" || status === "rejected") {
+    if (!reviewedBy) c.error("authority_reviewed_by", "Say who reviewed the signer's authority.");
+    if (!reviewedOn && !c.errors.some((e) => e.field === "authority_reviewed_on"))
+      c.error("authority_reviewed_on", "Say when the review was done.");
+  }
+  const ev = evidence(c, "authority_evidence");
+  return {
+    value: compact({
+      status: status ?? "not_started",
+      reviewed_by: reviewedBy,
+      reviewed_on: reviewedOn,
+      evidence: ev ? [ev] : undefined,
+      notes: c.text("authority_notes", LONG),
+    }),
+    errors: c.errors,
+  };
+}
+
+export function reviewToForm(review: Doc): Form {
+  const f = new URLSearchParams();
+  set(f, "authority_status", review.status ?? "not_started");
+  set(f, "authority_reviewed_by", review.reviewed_by);
+  set(f, "authority_reviewed_on", review.reviewed_on);
+  const ev = obj(arr(review.evidence)[0]);
+  set(f, "authority_evidence_kind", ev.kind);
+  set(f, "authority_evidence_reference", ev.reference);
+  set(f, "authority_evidence_date", ev.date);
+  set(f, "authority_evidence_uri", ev.uri);
+  set(f, "authority_notes", review.notes);
+  return f;
+}

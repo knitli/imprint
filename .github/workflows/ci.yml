@@ -27,14 +27,16 @@ jobs:
       - run: npm ci --ignore-scripts
       - run: npm run lint
       - run: npm run typecheck
-      - name: Install pinned Typst (checksum verified) and pdftotext
+      - name: Install pinned Typst (checksum verified), pdftotext, and the PKCS#11 test token
         run: |
           ./scripts/install-typst.sh
-          sudo apt-get install --yes --no-install-recommends poppler-utils
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends poppler-utils softhsm2 opensc
       - run: npm test
         env:
-          # Fail, rather than skip, if the PDF tools are missing.
+          # Fail, rather than skip, if the PDF or PKCS#11 tools are missing.
           IMPRINT_REQUIRE_TYPST: "1"
+          IMPRINT_REQUIRE_PKCS11: "1"
       - name: Install Chromium for end-to-end tests
         run: npx playwright install --with-deps chromium
       - run: npm run test:e2e
