@@ -246,3 +246,6 @@ Thumbs.db
 # here so they are never committed. Public examples must be synthetic and live
 # in a reviewed fixtures folder instead.
 /local/
+
+# Imprint local data (guides). Never commit.
+/imprint-data/
