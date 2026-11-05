@@ -65,7 +65,9 @@ export class GuideStore {
     for (const key of await this.keys()) {
       await removeStaleTemps(this.guideDir(key));
       for (const rev of await readdir(join(this.guideDir(key), "revisions")).catch(() => [] as string[])) {
-        if (isLocalId(rev)) await removeStaleTemps(this.revisionDir(key, rev));
+        if (!isLocalId(rev)) continue;
+        await removeStaleTemps(this.revisionDir(key, rev));
+        await removeStaleTemps(join(this.revisionDir(key, rev), "exports"));
       }
     }
   }
@@ -148,6 +150,34 @@ export class GuideStore {
       if (raw) out.push(JSON.parse(raw) as FreezeRecord);
     }
     return out.sort((a, b) => a.frozen_at.localeCompare(b.frozen_at));
+  }
+
+  /** Exported files of a frozen revision. Written once, so released bytes never change. */
+  static readonly EXPORT_NAMES = new Set(["guide.pdf", "guide.xlsx", "release-manifest.json", "release.zip"]);
+
+  private exportPath(key: string, revisionId: string, name: string): string {
+    if (!GuideStore.EXPORT_NAMES.has(name)) throw new StoreError("bad_id", "Not an export name.");
+    return join(this.revisionDir(key, revisionId), "exports", name);
+  }
+
+  async readExport(key: string, revisionId: string, name: string): Promise<Uint8Array | null> {
+    return readFile(this.exportPath(key, revisionId, name)).then(
+      (b) => new Uint8Array(b),
+      () => null,
+    );
+  }
+
+  /** Store an export, or return the one already stored if another request got there first. */
+  async writeExport(key: string, revisionId: string, name: string, bytes: Uint8Array): Promise<Uint8Array> {
+    const path = this.exportPath(key, revisionId, name);
+    await mkdir(join(this.revisionDir(key, revisionId), "exports"), { recursive: true, mode: 0o700 });
+    try {
+      await createImmutable(path, bytes);
+      return bytes;
+    } catch (e) {
+      if ((e as NodeJS.ErrnoException).code === "EEXIST") return new Uint8Array(await readFile(path));
+      throw e;
+    }
   }
 
   async readRevision(key: string, revisionId: string): Promise<{ record: FreezeRecord; guide: Uint8Array }> {

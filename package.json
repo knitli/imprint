@@ -13,15 +13,18 @@
     "start": "node src/main.ts",
     "dev": "IMPRINT_MODE=demo node --watch src/main.ts",
     "typecheck": "tsc -p tsconfig.json",
-    "lint": "biome check .",
+    "lint": "biome check . && node scripts/gen-workbook-mapping.ts --check",
     "format": "biome format --write .",
     "test": "node --test --test-reporter=spec \"test/unit/**/*.test.ts\"",
     "test:e2e": "node --test --test-reporter=spec --test-concurrency=1 \"test/e2e/**/*.test.ts\"",
-    "verify": "npm run lint && npm run typecheck && npm test && npm run test:e2e"
+    "verify": "npm run lint && npm run typecheck && npm test && npm run test:e2e",
+    "docs:mapping": "node scripts/gen-workbook-mapping.ts"
   },
   "dependencies": {
     "@knitli/openscg": "0.1.0",
-    "@uswds/uswds": "3.14.0"
+    "@uswds/uswds": "3.14.0",
+    "exceljs": "4.4.0",
+    "jszip": "3.10.2"
   },
   "devDependencies": {
     "@biomejs/biome": "2.6.2",
@@ -29,5 +32,8 @@
     "axe-core": "4.14.0",
     "playwright": "1.63.0",
     "typescript": "7.0.2"
+  },
+  "overrides": {
+    "uuid": "11.1.1"
   }
 }

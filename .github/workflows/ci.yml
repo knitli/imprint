@@ -27,7 +27,14 @@ jobs:
       - run: npm ci --ignore-scripts
       - run: npm run lint
       - run: npm run typecheck
+      - name: Install pinned Typst (checksum verified) and pdftotext
+        run: |
+          ./scripts/install-typst.sh
+          sudo apt-get install --yes --no-install-recommends poppler-utils
       - run: npm test
+        env:
+          # Fail, rather than skip, if the PDF tools are missing.
+          IMPRINT_REQUIRE_TYPST: "1"
       - name: Install Chromium for end-to-end tests
         run: npx playwright install --with-deps chromium
       - run: npm run test:e2e

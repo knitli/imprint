@@ -14,7 +14,7 @@ This table tracks each Imprint requirement from [requirements.md](requirements.m
 | M-04 | Conditional and compilation guidance | SP-07, SP-08 | `validate` | In progress: compilation entries, conditions and references round-trip |
 | M-05 | The guide's own markings | SP-04 | `validate` | In progress: markings form, kept separate from entries, with a human review status |
 | M-06 | Actionable checks; never "compliant" | SP-00, SP-07 | `validate`, `isApprovalReady`, `RULES` | In progress: findings grouped by severity, linked to fields |
-| M-07 | JSON, PDF and XLSX from one frozen revision | SP-04, SP-05 | `canonicalize`, `payloadDigest`, `buildReleaseManifest` | Researching (SP-04, SP-05 done) |
+| M-07 | JSON, PDF and XLSX from one frozen revision | SP-04, SP-05 | `canonicalize`, `payloadDigest`, `buildReleaseManifest` | In progress: exports, unsigned release manifest and bundle; cross-output tests in `test/unit/exports.test.ts` |
 | M-08 | Import with no silent loss | SP-01 | `parseStrict`, `validate`, `compareForLoss` | In progress: strict import, loss check, signed files must still match |
 | M-09 | Sign with an existing credential | SP-03 | `buildApprovalStatement`, `verifyAttestation` | Researching (SoftHSM2 PKCS#11 in Chromium is the MVP acceptance environment, decision 0009) |
 | M-10 | Separate draft, signed, verified and authority states | SP-03 | `verifyAttestation` | Researching (SP-03 showed each state reported separately) |

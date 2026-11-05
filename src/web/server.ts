@@ -18,7 +18,9 @@ import { dirname, extname, join, normalize, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import type { Finding } from "@knitli/openscg";
 import { payloadDigest } from "@knitli/openscg";
+import { ExportService, type RevisionExport } from "../core/exports.ts";
 import { type Doc, type GuideService, type Level, MAX_GUIDE_BYTES, ServiceError } from "../core/service.ts";
+import { PdfUnavailable } from "../export/pdf.ts";
 import {
   detailsToForm,
   entryToForm,
@@ -174,9 +176,14 @@ export function createImprintServer(service: GuideService, config: ServerConfig)
     res.end();
   };
 
-  const download = (res: ServerResponse, bytes: Uint8Array | string, filename: string) => {
+  const download = (
+    res: ServerResponse,
+    bytes: Uint8Array | string,
+    filename: string,
+    type = "application/json; charset=utf-8",
+  ) => {
     res.writeHead(200, {
-      "content-type": "application/json; charset=utf-8",
+      "content-type": type,
       "content-disposition": `attachment; filename="${filename.replace(/[^A-Za-z0-9._-]/g, "_")}"`,
       "x-content-type-options": "nosniff",
       "cache-control": "no-store",
@@ -204,6 +211,8 @@ export function createImprintServer(service: GuideService, config: ServerConfig)
     { href: "/", label: "Guides" },
     { href: `/guides/${key}`, label: title || "Guide" },
   ];
+
+  const exports = new ExportService(service);
 
   function entryFindings(findings: readonly Finding[], index: number): Finding[] {
     const prefix = `/entries/${index}`;
@@ -285,6 +294,11 @@ export function createImprintServer(service: GuideService, config: ServerConfig)
         `${JSON.stringify(view.doc, null, 2)}\n`,
         `${str(view.doc.revision_id) || "draft"}.json`,
       );
+    }
+
+    if ((sub === "/preview.pdf" || sub === "/preview.xlsx") && method === "GET") {
+      const file = await exports.preview(key, sub === "/preview.pdf" ? "pdf" : "xlsx");
+      return download(res, file.bytes, file.name, file.type);
     }
 
     // Simple forms: details, markings, sections.
@@ -412,10 +426,18 @@ export function createImprintServer(service: GuideService, config: ServerConfig)
       await service.newRevision(key, (f.get("revision_id") ?? "").trim());
       return redirect(res, `${base}?saved=new-revision`);
     }
-    const rm = /^\/revisions\/([A-Za-z0-9][A-Za-z0-9._-]{0,63})(\/guide\.json)?$/.exec(sub);
+    const rm =
+      /^\/revisions\/([A-Za-z0-9][A-Za-z0-9._-]{0,63})(?:\/(guide\.json|guide\.pdf|guide\.xlsx|release-manifest\.json|release\.zip))?$/.exec(
+        sub,
+      );
     if (rm && method === "GET") {
-      const rev = await service.revision(key, rm[1] as string);
-      if (rm[2]) return download(res, rev.bytes, `${rev.record.revision_id}.json`);
+      const revisionId = rm[1] as string;
+      if (rm[2]) {
+        const kind = REVISION_FILES[rm[2]] as RevisionExport;
+        const file = await exports.revisionFile(key, revisionId, kind);
+        return download(res, file.bytes, file.name, file.type);
+      }
+      const rev = await service.revision(key, revisionId);
       return page(
         res,
         200,
@@ -438,6 +460,9 @@ export function createImprintServer(service: GuideService, config: ServerConfig)
       if (err instanceof HttpError) {
         status = err.status;
         message = err.message;
+      } else if (err instanceof PdfUnavailable) {
+        status = 503;
+        message = err.message;
       } else if (err instanceof ServiceError) {
         status = { bad_input: 400, not_found: 404, conflict: 409, not_ready: 409, rejected: 422 }[err.code];
         message = err.message;
@@ -453,6 +478,14 @@ export function createImprintServer(service: GuideService, config: ServerConfig)
     });
   });
 }
+
+const REVISION_FILES: Record<string, RevisionExport> = {
+  "guide.json": "json",
+  "guide.pdf": "pdf",
+  "guide.xlsx": "xlsx",
+  "release-manifest.json": "manifest",
+  "release.zip": "bundle",
+};
 
 const FLASH: Record<string, string> = {
   created: "Guide started. Fill in its details, markings and entries.",

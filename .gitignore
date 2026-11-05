@@ -249,3 +249,6 @@ Thumbs.db
 
 # Imprint local data (guides). Never commit.
 /imprint-data/
+
+# Pinned tools installed by scripts/install-typst.sh
+/.tools/
