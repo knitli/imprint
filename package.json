@@ -1,0 +1,33 @@
+{
+  "name": "imprint",
+  "private": true,
+  "version": "0.1.0-dev",
+  "description": "Imprint: an open, self-hostable application for writing, checking, signing and exporting security classification guides in the OpenSCG format. Not an official government tool.",
+  "license": "AGPL-3.0-only",
+  "author": "Knitli Inc. <hello@knit.li>",
+  "type": "module",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "scripts": {
+    "start": "node src/main.ts",
+    "dev": "IMPRINT_MODE=demo node --watch src/main.ts",
+    "typecheck": "tsc -p tsconfig.json",
+    "lint": "biome check .",
+    "format": "biome format --write .",
+    "test": "node --test --test-reporter=spec \"test/unit/**/*.test.ts\"",
+    "test:e2e": "node --test --test-reporter=spec --test-concurrency=1 \"test/e2e/**/*.test.ts\"",
+    "verify": "npm run lint && npm run typecheck && npm test && npm run test:e2e"
+  },
+  "dependencies": {
+    "@knitli/openscg": "0.1.0",
+    "@uswds/uswds": "3.14.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.6.2",
+    "@types/node": "22.20.5",
+    "axe-core": "4.14.0",
+    "playwright": "1.63.0",
+    "typescript": "7.0.2"
+  }
+}

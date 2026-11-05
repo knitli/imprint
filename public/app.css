@@ -1,0 +1,55 @@
+/* SPDX-License-Identifier: AGPL-3.0-only */
+/* Small additions to USWDS. Keep this file short: USWDS does the heavy lifting. */
+.imprint-main {
+  padding-bottom: 3rem;
+}
+.imprint-mode {
+  margin: 0;
+}
+.imprint-mono {
+  font-family: "Roboto Mono", ui-monospace, monospace;
+}
+.imprint-wrap {
+  overflow-wrap: anywhere;
+}
+.imprint-code {
+  color: #565c65;
+  font-size: 0.85em;
+  white-space: nowrap;
+}
+.imprint-subgroup {
+  border-left: 3px solid #dfe1e2;
+  padding-left: 1rem;
+  margin-top: 1rem;
+}
+.imprint-statement {
+  border-left: 4px solid #005ea2;
+  margin: 1rem 0;
+  padding: 0.5rem 1rem;
+  background: #f0f0f0;
+  overflow-wrap: anywhere;
+}
+.imprint-table {
+  width: 100%;
+}
+.imprint-table td,
+.imprint-table th {
+  vertical-align: top;
+  overflow-wrap: anywhere;
+}
+.imprint-facts li {
+  margin-bottom: 0.25rem;
+  overflow-wrap: anywhere;
+}
+.imprint-findings h3 {
+  margin-bottom: 0.25rem;
+}
+.imprint-delete {
+  margin-top: 2rem;
+}
+.imprint-form .usa-fieldset[disabled] {
+  opacity: 0.85;
+}
+#main-content:focus:not(:focus-visible) {
+  outline: none;
+}

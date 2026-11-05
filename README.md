@@ -2,7 +2,7 @@
 
 Imprint is an open, self-hostable application for writing, checking, signing and exporting **security classification guides (SCGs)**. It reads and writes [OpenSCG](https://github.com/knitli/OpenSCG), an open format for SCGs.
 
-> **Status: pre-implementation.** There is no application yet. This repository holds the requirements, the research plan, decision records and small experiments ("spikes"). Nothing here is ready for real use.
+> **Status: early development.** You can write, check, freeze and import guides. Exports, signing and the UDS package are being built. Nothing here is ready for real use.
 
 > **Imprint is not an official government tool, and it does not make classification decisions.** It helps people write and communicate guidance. It does not grant classification authority, approve a guide, or replace an agency's own processes. A guide that passes every check is complete and consistent, not approved. A valid signature proves who signed which bytes, not that the signer had authority.
 
@@ -19,10 +19,51 @@ For one person working on their own machine, or a self-hosted server:
 
 The full requirements are in [`docs/requirements/requirements.md`](docs/requirements/requirements.md).
 
+## Run it
+
+Needs Node.js 22.18 or later.
+
+```bash
+npm ci
+```
+
+Start the demo. It accepts only synthetic guides and keeps nothing after it stops:
+
+```bash
+IMPRINT_MODE=demo npm start
+```
+
+Then open http://127.0.0.1:8460/. To keep your guides, run `npm start` instead; they are saved in `./imprint-data`, or in the folder named by `IMPRINT_DATA`. The server listens only on your own machine unless you set `IMPRINT_HOST`.
+
+To try it with an example, import `node_modules/@knitli/openscg/examples/synthetic-lantern.json` from the home page.
+
+### Checks
+
+```bash
+npm run lint
+```
+
+```bash
+npm run typecheck
+```
+
+```bash
+npm test
+```
+
+End-to-end tests drive Chromium with the keyboard only and run axe-core on every page:
+
+```bash
+npm run test:e2e
+```
+
 ## Where things are
 
 | Path | What it is |
 | --- | --- |
+| [`src/core/`](src/core/) | Storage and the guide service: create, save, freeze, import |
+| [`src/web/`](src/web/) | The local web server, forms and pages |
+| [`test/`](test/) | Unit tests and end-to-end keyboard and accessibility tests |
 | [`docs/requirements/`](docs/requirements/) | Requirements, the Git/UDS addendum, and a traceability table |
 | [`docs/research/`](docs/research/) | The research and spike plan, with results so far |
 | [`docs/decisions/`](docs/decisions/) | Decision records: what we chose and why |

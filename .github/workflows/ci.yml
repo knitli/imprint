@@ -1,9 +1,4 @@
-# Continuous integration for the pre-implementation stage.
-#
-# Right now the only code in this repository is research spikes. This workflow
-# runs the OpenSCG conformance smoke spike so we notice if the pinned
-# dependency stops behaving as its specification says. Replace or extend it
-# when application code lands.
+# Continuous integration.
 #
 # Third-party actions are pinned to full commit SHAs (supply-chain requirement,
 # docs/requirements/requirements.md section 7). The comment gives the tag.
@@ -19,6 +14,24 @@ permissions:
   contents: read
 
 jobs:
+  app:
+    name: Lint, typecheck and tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
+        with:
+          node-version-file: .nvmrc
+      - run: npm ci --ignore-scripts
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test
+      - name: Install Chromium for end-to-end tests
+        run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
+
   openscg-smoke:
     name: OpenSCG conformance smoke spike
     runs-on: ubuntu-latest
