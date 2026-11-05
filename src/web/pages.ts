@@ -202,8 +202,17 @@ ${
       )}</ul>`
     : html`<p>None yet.</p>`
 }
-<h2>Download</h2>
-<p><a href="${base}/draft.json" download>Download the current ${view.frozen ? "revision" : "draft"} as OpenSCG JSON</a></p>`;
+<h2>Preview and download</h2>
+<p class="usa-hint">${
+    view.frozen
+      ? "For the released files of a frozen revision, open the revision above."
+      : "Previews of a draft are labeled DRAFT / NOT APPROVED on every page and sheet."
+  }</p>
+<ul class="usa-list">
+  <li><a href="${base}/draft.json" download>OpenSCG JSON of the current ${view.frozen ? "revision" : "draft"}</a></li>
+  <li><a href="${base}/preview.pdf" download>PDF preview</a></li>
+  <li><a href="${base}/preview.xlsx" download>Workbook preview (generic export, not a DTIC submission)</a></li>
+</ul>`;
 }
 
 function suggestNext(rev: string): string {
@@ -604,8 +613,15 @@ export function revisionPage(view: GuideView, record: FreezeRecord, doc: Doc): S
 </ul>
 <h2>Approval statement</h2>
 <blockquote class="imprint-statement">${approvalText({ guide_id: str(doc.guide_id), revision_id: record.revision_id, title: str(doc.title) }, record.payload_digest)}</blockquote>
-<h2>Download</h2>
-<p><a href="${base}/revisions/${record.revision_id}/guide.json" download>Frozen guide (OpenSCG JSON, canonical form)</a></p>`;
+<h2>Released files</h2>
+<p>All files below come from this one frozen revision and never change. Each shows the guide ID, revision and payload digest. The shared digest identifies the revision; it does not prove a PDF or workbook matches the JSON. The release manifest lists each file's SHA-256 hash for that check.</p>
+<ul class="usa-list">
+  <li><a href="${base}/revisions/${record.revision_id}/guide.json" download>Frozen guide (OpenSCG JSON, canonical form)</a>: the authoritative copy</li>
+  <li><a href="${base}/revisions/${record.revision_id}/guide.pdf" download>PDF</a></li>
+  <li><a href="${base}/revisions/${record.revision_id}/guide.xlsx" download>Workbook (generic export, not a DTIC submission)</a></li>
+  <li><a href="${base}/revisions/${record.revision_id}/release-manifest.json" download>Release manifest (unsigned)</a></li>
+  <li><a href="${base}/revisions/${record.revision_id}/release.zip" download>Everything above in one zip file</a></li>
+</ul>`;
 }
 
 export function messagePage(title: string, message: string, back?: string): Safe {

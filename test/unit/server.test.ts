@@ -2,7 +2,7 @@
 import assert from "node:assert/strict";
 import { request } from "node:http";
 import { after, before, describe, it, mock } from "node:test";
-import { fixtureBytes, LANTERN } from "../helpers/fixtures.ts";
+import { fixtureBytes, LANTERN, LANTERN_REVIEWED } from "../helpers/fixtures.ts";
 import { post, startServer } from "../helpers/server.ts";
 
 describe("web server", () => {
@@ -147,6 +147,32 @@ describe("web server", () => {
       assert.ok(!logged.some((l) => l.includes(secret)), logged.join("\n"));
     } finally {
       for (const sp of spies) sp.mock.restore();
+    }
+  });
+});
+
+describe("exports over HTTP", () => {
+  it("serves draft previews and released files with the right types, or explains when PDF is unavailable", async () => {
+    const s2 = await startServer();
+    const saved = process.env.IMPRINT_TYPST;
+    try {
+      const { key } = await s2.service.importGuide(await fixtureBytes(LANTERN_REVIEWED));
+      const xlsx = await fetch(`${s2.base}/guides/${key}/preview.xlsx`);
+      assert.equal(xlsx.status, 200);
+      assert.match(xlsx.headers.get("content-disposition") ?? "", /_DRAFT\.xlsx"/);
+      await s2.service.freeze(key);
+      const json = await fetch(`${s2.base}/guides/${key}/revisions/2026-r1/guide.json`);
+      assert.equal(json.status, 200);
+      assert.equal(json.headers.get("content-type"), "application/json");
+      process.env.IMPRINT_TYPST = "/nonexistent/typst";
+      const pdf = await fetch(`${s2.base}/guides/${key}/preview.pdf`);
+      assert.equal(pdf.status, 503);
+      assert.match(await pdf.text(), /PDF export needs Typst 0\.15\.0/);
+      assert.equal((await fetch(`${s2.base}/guides/${key}/revisions/2026-r1/other.txt`)).status, 404);
+    } finally {
+      if (saved === undefined) delete process.env.IMPRINT_TYPST;
+      else process.env.IMPRINT_TYPST = saved;
+      await s2.stop();
     }
   });
 });

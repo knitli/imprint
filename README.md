@@ -2,7 +2,7 @@
 
 Imprint is an open, self-hostable application for writing, checking, signing and exporting **security classification guides (SCGs)**. It reads and writes [OpenSCG](https://github.com/knitli/OpenSCG), an open format for SCGs.
 
-> **Status: early development.** You can write, check, freeze and import guides. Exports, signing and the UDS package are being built. Nothing here is ready for real use.
+> **Status: early development.** You can write, check, freeze, import and export guides (JSON, PDF and workbook). Signing and the UDS package are being built. Nothing here is ready for real use.
 
 > **Imprint is not an official government tool, and it does not make classification decisions.** It helps people write and communicate guidance. It does not grant classification authority, approve a guide, or replace an agency's own processes. A guide that passes every check is complete and consistent, not approved. A valid signature proves who signed which bytes, not that the signer had authority.
 
@@ -31,6 +31,12 @@ Start the demo. It accepts only synthetic guides and keeps nothing after it stop
 
 ```bash
 IMPRINT_MODE=demo npm start
+```
+
+PDF export needs the pinned Typst tool. This downloads it and checks its SHA-256:
+
+```bash
+./scripts/install-typst.sh
 ```
 
 Then open http://127.0.0.1:8460/. To keep your guides, run `npm start` instead; they are saved in `./imprint-data`, or in the folder named by `IMPRINT_DATA`. The server listens only on your own machine unless you set `IMPRINT_HOST`.
@@ -63,6 +69,7 @@ npm run test:e2e
 | --- | --- |
 | [`src/core/`](src/core/) | Storage and the guide service: create, save, freeze, import |
 | [`src/web/`](src/web/) | The local web server, forms and pages |
+| [`src/export/`](src/export/), [`templates/`](templates/) | PDF (Typst), workbook (ExcelJS) and release manifest |
 | [`test/`](test/) | Unit tests and end-to-end keyboard and accessibility tests |
 | [`docs/requirements/`](docs/requirements/) | Requirements, the Git/UDS addendum, and a traceability table |
 | [`docs/research/`](docs/research/) | The research and spike plan, with results so far |
