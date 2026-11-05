@@ -7,6 +7,8 @@
 //   IMPRINT_DATA           where guides are stored (default ./imprint-data).
 //   IMPRINT_HOST           address to listen on (default 127.0.0.1).
 //   IMPRINT_PORT           port (default 8460; 0 picks a free port).
+//   IMPRINT_TRUST_DIR      trust anchors, CRLs and policy for verifying
+//                          signatures (default <data>/trust). See src/core/trust.ts.
 //   IMPRINT_ALLOWED_HOSTS  extra Host header values to accept, comma-separated,
 //                          for example the name a cluster gateway uses.
 
@@ -31,7 +33,8 @@ const allowedHosts = (process.env.IMPRINT_ALLOWED_HOSTS ?? "")
 const store = new GuideStore(dataDir);
 await store.init();
 const service = new GuideService(store, { demo });
-const server = createImprintServer(service, { host, port, demo, allowedHosts });
+const trustDir = resolve(process.env.IMPRINT_TRUST_DIR ?? join(dataDir, "trust"));
+const server = createImprintServer(service, { host, port, demo, allowedHosts, trustDir });
 
 server.listen(port, host, () => {
   const address = server.address();
@@ -40,6 +43,7 @@ server.listen(port, host, () => {
     `Imprint ${demo ? "demo " : ""}listening on http://${host === "0.0.0.0" ? "127.0.0.1" : host}:${actual}`,
   );
   if (!demo) console.log(`Data folder: ${dataDir}`);
+  console.log(`Trust folder: ${trustDir}`);
 });
 
 for (const signal of ["SIGINT", "SIGTERM"] as const) {

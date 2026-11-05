@@ -4,7 +4,7 @@
 // web interface. All format behaviour comes from @knitli/openscg (decision 0002,
 // 0003); this file only decides when to call it and what to store.
 
-import { randomUUID } from "node:crypto";
+import { createHash, randomUUID } from "node:crypto";
 import {
   canonicalize,
   compareForLoss,
@@ -72,6 +72,10 @@ export interface ImportResult {
   readonly loss: LossReport;
   readonly importedAsFrozen: boolean;
 }
+
+/** Short, stable ID of a stored signature: the first 16 hex digits of the SHA-256 of its base64 text. */
+export const signatureId = (signatureBase64: string): string =>
+  createHash("sha256").update(signatureBase64).digest("hex").slice(0, 16);
 
 const serialize = (doc: Doc): string => `${JSON.stringify(doc, null, 2)}\n`;
 const str = (v: unknown): string => (typeof v === "string" ? v : "");
@@ -294,12 +298,19 @@ export class GuideService {
     const attestations = Array.isArray(doc.attestations) ? doc.attestations : [];
     if (attestations.length > 0) {
       for (const att of attestations) {
-        // Binding only: no trust anchors, so nothing is reported as trusted here.
+        // Binding and signature only: no trust anchors, so nothing is reported
+        // as trusted here. Trust is judged later under the local policy.
         const report = await verifyAttestation(doc as never, att as never, { trustAnchors: [] });
         if (report.binding !== "ok") {
           throw new ServiceError(
             "rejected",
             "This file carries a signature that no longer matches its content. It may have been changed after signing, so it was not imported.",
+          );
+        }
+        if (report.signature !== "valid") {
+          throw new ServiceError(
+            "rejected",
+            "This file carries a signature that does not verify, so it was not imported.",
           );
         }
       }
@@ -328,6 +339,19 @@ export class GuideService {
         },
         canonicalize(payload),
       );
+      for (const att of attestations) {
+        const signature = String((att as Doc).signature);
+        await this.store.addSigned(
+          key,
+          doc.revision_id,
+          "attestations",
+          signatureId(signature),
+          `${JSON.stringify(att, null, 2)}\n`,
+        );
+      }
+      if (doc.review && typeof doc.review === "object") {
+        await this.store.writeReview(key, doc.revision_id, `${JSON.stringify(doc.review, null, 2)}\n`);
+      }
       importedAsFrozen = true;
     }
     return { key, findings, loss, importedAsFrozen };

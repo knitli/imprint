@@ -67,7 +67,9 @@ export class GuideStore {
       for (const rev of await readdir(join(this.guideDir(key), "revisions")).catch(() => [] as string[])) {
         if (!isLocalId(rev)) continue;
         await removeStaleTemps(this.revisionDir(key, rev));
-        await removeStaleTemps(join(this.revisionDir(key, rev), "exports"));
+        for (const sub of ["exports", "attestations", "manifest-signatures"]) {
+          await removeStaleTemps(join(this.revisionDir(key, rev), sub));
+        }
       }
     }
   }
@@ -178,6 +180,56 @@ export class GuideStore {
       if ((e as NodeJS.ErrnoException).code === "EEXIST") return new Uint8Array(await readFile(path));
       throw e;
     }
+  }
+
+  // ---- Signatures and review of a frozen revision --------------------------
+  // Each signature file is named after a hash of its contents and written
+  // once. The human authority review is replaced as people update it; it is
+  // outside the signed payload (OpenSCG spec 4.7).
+
+  private sideDir(key: string, revisionId: string, kind: "attestations" | "manifest-signatures"): string {
+    return join(this.revisionDir(key, revisionId), kind);
+  }
+
+  async addSigned(
+    key: string,
+    revisionId: string,
+    kind: "attestations" | "manifest-signatures",
+    id: string,
+    json: string,
+  ): Promise<boolean> {
+    if (!/^[0-9a-f]{16}$/.test(id)) throw new StoreError("bad_id", "Not a signature ID.");
+    const dir = this.sideDir(key, revisionId, kind);
+    await mkdir(dir, { recursive: true, mode: 0o700 });
+    try {
+      await createImmutable(join(dir, `${id}.json`), json);
+      return true;
+    } catch (e) {
+      if ((e as NodeJS.ErrnoException).code === "EEXIST") return false;
+      throw e;
+    }
+  }
+
+  async listSigned(
+    key: string,
+    revisionId: string,
+    kind: "attestations" | "manifest-signatures",
+  ): Promise<{ id: string; json: string }[]> {
+    const dir = this.sideDir(key, revisionId, kind);
+    const out: { id: string; json: string }[] = [];
+    for (const name of (await readdir(dir).catch(() => [] as string[])).sort()) {
+      const m = /^([0-9a-f]{16})\.json$/.exec(name);
+      if (m) out.push({ id: m[1] as string, json: await readFile(join(dir, name), "utf8") });
+    }
+    return out;
+  }
+
+  async readReview(key: string, revisionId: string): Promise<string | null> {
+    return readFile(join(this.revisionDir(key, revisionId), "review.json"), "utf8").catch(() => null);
+  }
+
+  async writeReview(key: string, revisionId: string, json: string): Promise<void> {
+    await replaceFile(join(this.revisionDir(key, revisionId), "review.json"), json);
   }
 
   async readRevision(key: string, revisionId: string): Promise<{ record: FreezeRecord; guide: Uint8Array }> {

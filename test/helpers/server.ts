@@ -3,9 +3,15 @@ import type { AddressInfo } from "node:net";
 import { createImprintServer } from "../../src/web/server.ts";
 import { tempService } from "./fixtures.ts";
 
-export async function startServer(demo = false) {
+export async function startServer(demo = false, trustDir = "/nonexistent/imprint-trust") {
   const t = await tempService(demo);
-  const server = createImprintServer(t.service, { host: "127.0.0.1", port: 0, demo, allowedHosts: [] });
+  const server = createImprintServer(t.service, {
+    host: "127.0.0.1",
+    port: 0,
+    demo,
+    allowedHosts: [],
+    trustDir,
+  });
   await new Promise<void>((r) => server.listen(0, "127.0.0.1", r));
   const base = `http://127.0.0.1:${(server.address() as AddressInfo).port}`;
   return {

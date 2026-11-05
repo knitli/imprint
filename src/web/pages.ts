@@ -7,7 +7,9 @@ import type { Finding } from "@knitli/openscg";
 import { approvalText } from "@knitli/openscg";
 import type { Doc, GuideSummary, GuideView } from "../core/service.ts";
 import { LEVELS, PROFILES } from "../core/service.ts";
+import { type AttestationView, headline, type ManifestSignatureView } from "../core/signing.ts";
 import type { FreezeRecord } from "../core/store.ts";
+import type { TrustSummary } from "../core/trust.ts";
 import {
   CATEGORIES,
   CONTROL_KINDS,
@@ -592,10 +594,87 @@ ${
 
 // ---- Revision -------------------------------------------------------------------------
 
-export function revisionPage(view: GuideView, record: FreezeRecord, doc: Doc): Safe {
-  const base = `/guides/${view.key}`;
+export interface RevisionData {
+  readonly statementText: string | null;
+  readonly statementProblem: string | null;
+  readonly attestations: readonly AttestationView[];
+  readonly manifestSignatures: readonly ManifestSignatureView[];
+  readonly trust: TrustSummary;
+  readonly reviewForm: Form;
+  readonly reviewErrors: readonly FieldError[];
+}
+
+const RESULT_WORDS: Record<string, Record<string, string>> = {
+  binding: { ok: "Matches this revision", mismatch: "Does NOT match this revision" },
+  signature: { valid: "Valid", invalid: "Not valid", malformed: "Could not be read" },
+  algorithm: { permitted: "Permitted", not_permitted: "Not permitted by policy", not_checked: "Not checked" },
+  key_usage: {
+    permitted: "Document signing",
+    not_permitted: "Not a document-signing certificate",
+    not_checked: "Not checked",
+  },
+  validity: {
+    ok: "Within its validity period",
+    expired: "Expired",
+    not_yet_valid: "Not yet valid",
+    not_checked: "Not checked",
+  },
+  trust: {
+    trusted: "Chains to a local trust anchor",
+    untrusted: "Does not chain to a local trust anchor",
+    not_checked: "Not checked",
+  },
+  revocation: {
+    good: "Not revoked (local CRLs)",
+    revoked: "REVOKED",
+    unknown: "Unknown (no current CRL)",
+    not_checked: "Not checked",
+  },
+  authority: {
+    not_verified: "Not verified by a person",
+    review_complete: "A person recorded the review as complete",
+    review_rejected: "A person recorded that the authority was rejected",
+  },
+};
+
+function attestationBlock(a: AttestationView, acceptsUnknown: boolean): Safe {
+  const r = a.report;
+  const rows: [string, string][] = [
+    ["Content", RESULT_WORDS.binding?.[r.binding] ?? r.binding],
+    ["Signature", RESULT_WORDS.signature?.[r.signature] ?? r.signature],
+    ["Algorithm", RESULT_WORDS.algorithm?.[r.algorithm] ?? r.algorithm],
+    ["Certificate use", RESULT_WORDS.key_usage?.[r.key_usage] ?? r.key_usage],
+    ["Validity period", RESULT_WORDS.validity?.[r.validity] ?? r.validity],
+    ["Trust", RESULT_WORDS.trust?.[r.trust] ?? r.trust],
+    ["Revocation", RESULT_WORDS.revocation?.[r.revocation] ?? r.revocation],
+    ["Classification authority", RESULT_WORDS.authority?.[r.authority] ?? r.authority],
+  ];
+  return html`<div class="usa-alert ${r.technically_valid ? "usa-alert--info" : "usa-alert--error"} imprint-attestation"><div class="usa-alert__body">
+  <h3 class="usa-alert__heading">${headline(r, acceptsUnknown)}</h3>
+  <p class="usa-alert__text">Signer certificate: ${r.signer_subject ?? "unknown"}${
+    r.claimed_signing_time
+      ? html`. Signing time claimed by the signer (not trusted): ${r.claimed_signing_time}`
+      : ""
+  }.</p>
+  <table class="usa-table usa-table--borderless usa-table--compact imprint-table">
+    <caption class="usa-sr-only">Verification results for signature ${a.id}</caption>
+    <tbody>${rows.map(([k, v]) => html`<tr><th scope="row">${k}</th><td>${v}</td></tr>`)}</tbody>
+  </table>
+  <p class="usa-alert__text imprint-code">Signature ${a.id}</p>
+</div></div>`;
+}
+
+export function revisionPage(view: GuideView, record: FreezeRecord, doc: Doc, data: RevisionData): Safe {
+  const base = `/guides/${view.key}/revisions/${record.revision_id}`;
+  const valid = data.attestations.filter((a) => a.report.technically_valid);
+  const review = data.reviewForm.get("authority_status") ?? "not_started";
+  const acceptsUnknown = data.trust.unknownRevocation === "accept";
+  const f = data.reviewForm;
+  const v = (n: string) => f.get(n) ?? "";
+  const e = data.reviewErrors;
   return html`
 <h1>Revision ${record.revision_id}</h1>
+${errorSummary(e)}
 <div class="usa-summary-box" role="region" aria-labelledby="rev-summary"><div class="usa-summary-box__body">
 <h2 class="usa-summary-box__heading" id="rev-summary">Identity</h2>
 <ul class="usa-list">
@@ -604,24 +683,128 @@ export function revisionPage(view: GuideView, record: FreezeRecord, doc: Doc): S
   <li>Payload digest (${record.payload_digest.alg}): <span class="imprint-mono imprint-wrap">${record.payload_digest.value}</span></li>
   <li>Frozen: ${record.frozen_at}</li>
 </ul></div></div>
+
 <h2>Status</h2>
 <ul class="usa-list">
   <li><strong>Frozen:</strong> yes. This content cannot change.</li>
-  <li><strong>Signed:</strong> not yet.</li>
-  <li><strong>Authority:</strong> not verified.</li>
+  <li><strong>Signatures:</strong> ${
+    data.attestations.length === 0
+      ? "none yet."
+      : `${data.attestations.length} stored; ${valid.length} valid under this system's trust policy.`
+  }</li>
+  <li><strong>Classification authority:</strong> ${RESULT_WORDS.authority?.[review === "complete" ? "review_complete" : review === "rejected" ? "review_rejected" : "not_verified"]}. A valid signature never shows this by itself.</li>
   <li><strong>Issued:</strong> Imprint does not issue guides. Issuance and distribution are acts of your organization.</li>
 </ul>
-<h2>Approval statement</h2>
-<blockquote class="imprint-statement">${approvalText({ guide_id: str(doc.guide_id), revision_id: record.revision_id, title: str(doc.title) }, record.payload_digest)}</blockquote>
+
+<h2>Signatures</h2>
+${
+  data.trust.anchors.length === 0
+    ? html`<div class="usa-alert usa-alert--warning usa-alert--slim"><div class="usa-alert__body"><p class="usa-alert__text">No trust anchors are set up, so no signature can be trusted yet. <a href="/trust">See the trust settings</a>.</p></div></div>`
+    : ""
+}
+${data.attestations.length ? data.attestations.map((a) => attestationBlock(a, acceptsUnknown)) : html`<p>No signatures yet.</p>`}
+
+<h2>Sign this revision</h2>
+${
+  data.statementText
+    ? html`<p>The original classification authority approves this statement:</p>
+<blockquote class="imprint-statement">${data.statementText}</blockquote>
+<ol class="usa-process-list">
+  <li class="usa-process-list__item"><p class="usa-process-list__heading">Download the exact bytes to sign</p>
+    <p><a href="${base}/approval-statement.bin" download>approval-statement.bin</a> (also as <a href="${base}/approval-statement.json" download>readable JSON</a>). Sign this file exactly as downloaded. Do not open, change or re-save it.</p></li>
+  <li class="usa-process-list__item"><p class="usa-process-list__heading">Make a detached signature</p>
+    <p>Use your organization's approved signing tool to make a detached CMS (PKCS #7) signature, usually a <code>.p7s</code> file, with a document-signing certificate. With a PKCS#11 token, Imprint's helper does this and checks the result first:</p>
+    <pre class="imprint-code-block" tabindex="0" aria-label="Example command"><code>npm run sign -- \\
+  --module /path/to/pkcs11-module.so \\
+  --id KEY-ID \\
+  --in approval-statement.bin \\
+  --out approval-statement.p7s</code></pre>
+    <p>Your token's own software asks for the PIN. Imprint never asks for it.</p></li>
+  <li class="usa-process-list__item"><p class="usa-process-list__heading">Upload the signature</p>
+    <form class="usa-form" method="post" action="${base}/signatures" enctype="multipart/form-data">
+      <div class="usa-form-group"><label class="usa-label" for="f-signature">Signature file (.p7s, DER, PEM or base64)</label>
+      <input class="usa-file-input" id="f-signature" name="signature" type="file" accept=".p7s,.p7m,.pem,.der,.b64,.txt"></div>
+      ${submit("Upload signature")}
+    </form></li>
+</ol>`
+    : html`<div class="usa-alert usa-alert--info"><div class="usa-alert__body"><p class="usa-alert__text">${data.statementProblem ?? "There is no approval statement for this revision."}</p></div></div>`
+}
+
+<h2>Authority review</h2>
+<p>After signing, a person checks that the signer really holds original classification authority for this program and level, and that your organization accepts this signature process. Record the result here. It is kept outside the signed content, so recording it does not change the signature.</p>
+<form class="usa-form usa-form--large" method="post" action="${base}/review" novalidate>
+${choices({
+  name: "authority_status",
+  label: "Review of the signer's authority",
+  type: "radio",
+  options: [
+    { value: "not_started", label: "Not started" },
+    { value: "pending", label: "In progress" },
+    { value: "complete", label: "Complete: authority confirmed" },
+    { value: "rejected", label: "Rejected: authority not confirmed" },
+  ],
+  selected: [v("authority_status") || "not_started"],
+  errors: e,
+})}
+${input({ name: "authority_reviewed_by", label: "Reviewed by", value: v("authority_reviewed_by"), errors: e, autocomplete: "off" })}
+${input({ name: "authority_reviewed_on", label: "Reviewed on", hint: "YYYY-MM-DD", value: v("authority_reviewed_on"), errors: e, width: "medium" })}
+${evidenceFields("authority_evidence", "Delegation evidence", f, e)}
+${textarea({ name: "authority_notes", label: "Notes", value: v("authority_notes"), errors: e, rows: 3 })}
+${submit("Save review")}
+</form>
+
 <h2>Released files</h2>
-<p>All files below come from this one frozen revision and never change. Each shows the guide ID, revision and payload digest. The shared digest identifies the revision; it does not prove a PDF or workbook matches the JSON. The release manifest lists each file's SHA-256 hash for that check.</p>
+<p>All files below come from this one frozen revision. Each shows the guide ID, revision and payload digest. The shared digest identifies the revision; it does not prove a PDF or workbook matches the JSON. The release manifest lists each file's SHA-256 hash for that check, including each signature file.</p>
 <ul class="usa-list">
-  <li><a href="${base}/revisions/${record.revision_id}/guide.json" download>Frozen guide (OpenSCG JSON, canonical form)</a>: the authoritative copy</li>
-  <li><a href="${base}/revisions/${record.revision_id}/guide.pdf" download>PDF</a></li>
-  <li><a href="${base}/revisions/${record.revision_id}/guide.xlsx" download>Workbook (generic export, not a DTIC submission)</a></li>
-  <li><a href="${base}/revisions/${record.revision_id}/release-manifest.json" download>Release manifest (unsigned)</a></li>
-  <li><a href="${base}/revisions/${record.revision_id}/release.zip" download>Everything above in one zip file</a></li>
-</ul>`;
+  <li><a href="${base}/guide.json" download>Frozen guide (OpenSCG JSON, canonical form)</a>: the authoritative copy</li>
+  <li><a href="${base}/guide.pdf" download>PDF</a></li>
+  <li><a href="${base}/guide.xlsx" download>Workbook (generic export, not a DTIC submission)</a></li>
+  <li><a href="${base}/signed-guide.json" download>Guide with its signatures and authority review (OpenSCG JSON)</a></li>
+  <li><a href="${base}/release-manifest.json" download>Release manifest</a></li>
+  <li><a href="${base}/release.zip" download>Everything above in one zip file</a></li>
+</ul>
+
+<h3>Sign the release manifest (optional)</h3>
+<p>A signed manifest lets anyone check that a PDF or workbook is exactly the one released. Sign <a href="${base}/release-manifest.bin" download>release-manifest.bin</a> the same way as the approval statement, then upload the signature. Sign it after all approval signatures are uploaded, because each one adds a file to the manifest.</p>
+<form class="usa-form" method="post" action="${base}/manifest-signatures" enctype="multipart/form-data">
+  <div class="usa-form-group"><label class="usa-label" for="f-manifest-signature">Manifest signature file</label>
+  <input class="usa-file-input" id="f-manifest-signature" name="signature" type="file" accept=".p7s,.p7m,.pem,.der,.b64,.txt"></div>
+  ${submit("Upload manifest signature", { secondary: true })}
+</form>
+${data.manifestSignatures.map(
+  (m) =>
+    html`<div class="usa-alert ${m.report.technically_valid ? "usa-alert--info" : "usa-alert--warning"} usa-alert--slim"><div class="usa-alert__body"><p class="usa-alert__text">Manifest signature ${m.id}: ${
+      m.report.technically_valid
+        ? "valid under this system's trust policy"
+        : "not valid under this system's trust policy"
+    }. Files: ${m.report.files.map((x) => `${x.name} ${x.status === "ok" ? "matches" : x.status === "missing" ? "missing" : "DOES NOT MATCH"}`).join("; ")}.</p></div></div>`,
+)}`;
+}
+
+export function trustPage(t: TrustSummary): Safe {
+  return html`<h1>Trust settings</h1>
+<p>Imprint trusts a signature only if its certificate chains to one of these anchors and is not revoked according to the revocation lists here. Nothing is fetched from the network. An administrator changes these by editing files in the trust folder; changes apply the next time a page is loaded.</p>
+<ul class="usa-list">
+  <li><strong>Trust folder:</strong> <span class="imprint-mono imprint-wrap">${t.dir}</span></li>
+  <li><strong>Trust anchors:</strong> ${t.anchors.length}</li>
+  <li><strong>Extra intermediate certificates:</strong> ${t.intermediates}</li>
+  <li><strong>Revocation lists:</strong> ${t.crls}</li>
+  <li><strong>When revocation status is unknown:</strong> ${t.unknownRevocation === "accept" ? "accept, and say so" : "treat the signature as not valid"}</li>
+  <li><strong>Require a document-signing certificate (nonRepudiation):</strong> ${t.requireNonRepudiation ? "yes" : "no"}</li>
+</ul>
+${
+  t.anchors.length
+    ? html`<table class="usa-table usa-table--borderless imprint-table"><caption>Trust anchors</caption><thead><tr><th scope="col">Subject</th><th scope="col">Valid until</th></tr></thead><tbody>${t.anchors.map(
+        (a) => html`<tr><td>${a.subject}</td><td>${a.notAfter.slice(0, 10)}</td></tr>`,
+      )}</tbody></table>`
+    : ""
+}
+${t.problems.length ? html`<div class="usa-alert usa-alert--warning"><div class="usa-alert__body"><h2 class="usa-alert__heading">Problems</h2><ul class="usa-list">${t.problems.map((p) => html`<li>${p}</li>`)}</ul></div></div>` : ""}
+<h2>Folder layout</h2>
+<pre class="imprint-code-block" tabindex="0" aria-label="Trust folder layout"><code>anchors/         trust anchor certificates (PEM or DER)
+intermediates/   extra intermediate certificates
+crls/            certificate revocation lists (PEM or DER)
+policy.json      {"unknown_revocation": "fail" or "accept", "require_non_repudiation": true or false}</code></pre>`;
 }
 
 export function messagePage(title: string, message: string, back?: string): Safe {

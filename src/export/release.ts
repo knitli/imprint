@@ -8,7 +8,7 @@
 // does not prove a PDF or workbook matches the JSON. The manifest does that
 // for the exact bytes released, once it is signed (signing is a later step).
 
-import { buildReleaseManifest, type ReleaseFile, type ReleaseManifest } from "@knitli/openscg";
+import type { ReleaseFile } from "@knitli/openscg";
 import JSZip from "jszip";
 import type { Doc } from "../core/service.ts";
 import { buildModel, type RenditionStatus } from "./model.ts";
@@ -53,30 +53,19 @@ export async function render(
   return writeWorkbook(guide, { statusLabel: model.statusLabel, fixedTime: created });
 }
 
-export async function manifestFor(
-  guide: Doc,
-  files: ReadonlyMap<ExportKind, Uint8Array>,
-): Promise<ReleaseManifest> {
-  const list: ReleaseFile[] = [...files.entries()].map(([kind, bytes]) => ({
-    name: fileName(guide, kind),
-    media_type: MEDIA[kind].type,
-    role: MEDIA[kind].role,
-    bytes,
-  }));
-  return buildReleaseManifest(guide as never, list);
-}
-
 /** One zip with every file and the manifest. Fixed timestamps make it repeatable. */
 export async function bundle(
   guide: Doc,
-  files: ReadonlyMap<ExportKind, Uint8Array>,
+  files: readonly { name: string; bytes: Uint8Array }[],
   manifestBytes: Uint8Array,
+  extra: ReadonlyMap<string, Uint8Array>,
   created: Date,
 ): Promise<Uint8Array> {
   const zip = new JSZip();
   const opts = { date: created, createFolders: false };
-  for (const [kind, bytes] of files) zip.file(fileName(guide, kind), bytes, opts);
+  for (const f of files) zip.file(f.name, f.bytes, opts);
   zip.file("release-manifest.json", manifestBytes, opts);
+  for (const [name, bytes] of extra) zip.file(name, bytes, opts);
   zip.file(
     "README.txt",
     [
@@ -86,9 +75,13 @@ export async function bundle(
       `Revision: ${String(guide.revision_id)}`,
       "",
       "The OpenSCG JSON file is the authoritative copy. The PDF and workbook are",
-      "renditions of the same frozen revision. release-manifest.json lists the",
-      "SHA-256 hash of each file; compare them to check that nothing changed.",
-      "An unsigned manifest is not proof of origin.",
+      "renditions of the same frozen revision. Files named *_attestation-*.json",
+      "are detached signatures over the revision's approval statement.",
+      "release-manifest.json lists the SHA-256 hash of each file; compare them to",
+      "check that nothing changed. An unsigned manifest is not proof of origin;",
+      "release-manifest.signed-*.json files, if present, are signed copies.",
+      "A valid signature does not show that the signer had classification",
+      "authority; that is a separate human review.",
       guide.synthetic === true ? "\nTHIS GUIDE IS SYNTHETIC: it is not real classification guidance." : "",
       "",
     ].join("\n"),

@@ -18,13 +18,16 @@
     "test": "node --test --test-reporter=spec \"test/unit/**/*.test.ts\"",
     "test:e2e": "node --test --test-reporter=spec --test-concurrency=1 \"test/e2e/**/*.test.ts\"",
     "verify": "npm run lint && npm run typecheck && npm test && npm run test:e2e",
-    "docs:mapping": "node scripts/gen-workbook-mapping.ts"
+    "docs:mapping": "node scripts/gen-workbook-mapping.ts",
+    "sign": "node bin/imprint-sign.ts"
   },
   "dependencies": {
     "@knitli/openscg": "0.1.0",
     "@uswds/uswds": "3.14.0",
+    "asn1js": "4.0.0",
     "exceljs": "4.4.0",
-    "jszip": "3.10.2"
+    "jszip": "3.10.2",
+    "pkijs": "4.0.1"
   },
   "devDependencies": {
     "@biomejs/biome": "2.6.2",
@@ -35,5 +38,8 @@
   },
   "overrides": {
     "uuid": "11.1.1"
+  },
+  "bin": {
+    "imprint-sign": "bin/imprint-sign.ts"
   }
 }
